@@ -17,7 +17,7 @@
             animation: fadeIn 1.5s ease-in-out;
         }
 
-        /* 1. Animasi Mengambang untuk Judul */
+        /* Animasi Mengambang untuk Judul */
         h1 {
             color: #00c8ff;
             font-size: 2.5rem;
@@ -37,7 +37,7 @@
             padding-bottom: 5px;
         }
 
-        /* 2. Animasi Tombol WhatsApp Bergetar/Membesar */
+        /* Animasi Tombol WhatsApp Bergetar/Membesar */
         .btn-wa {
             display: inline-block;
             padding: 15px 30px;
@@ -51,23 +51,6 @@
             margin-top: 30px;
             transition: 0.3s;
             animation: pulse 2s infinite;
-        }
-
-        /* 3. Tombol Kontrol Musik Floating di Pojok Kanan Bawah */
-        .music-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(34, 34, 34, 0.85);
-            border: 2px solid #00c8ff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
-            z-index: 9999;
         }
 
         /* --- LOGIK ANIMASI (Keyframes) --- */
@@ -100,29 +83,30 @@
 
     <br>
 
+    <!-- Tombol WA -->
     <a href="https://wa.me/6287852990112" class="btn-wa">
         Chat WhatsApp
     </a>
 
-    <audio id="bgMusic" loop>
-        <source src="ssstik.io_1783396162890.mp3" type="audio/mpeg">
+    <!-- Audio Otomatis Memakai Link Catbox Kamu & Mengulang Terus (Loop) -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="https://files.catbox.moe/pi0jsd.mp3" type="audio/mpeg">
     </audio>
 
-    <button class="music-btn" onclick="toggleMusic()">🎵 Putar Musik</button>
-
     <script>
-        function toggleMusic() {
+        /* TRIK SENYAP: Karena aturan browser melarang musik menyala sendiri sebelum disentuh,
+           kode ini akan memaksa musik langsung berputar begitu user menyentuh atau mengklik layar pertama kali. */
+        document.addEventListener('click', function() {
             var audio = document.getElementById("bgMusic");
-            var btn = document.querySelector(".music-btn");
-            if (audio.paused) {
-                audio.play();
-                btn.innerHTML = "⏸️ Pause Musik";
-            } else {
-                audio.pause();
-                btn.innerHTML = "🎵 Putar Musik";
-            }
-        }
+            audio.play();
+        }, { once: true });
+
+        document.addEventListener('touchstart', function() {
+            var audio = document.getElementById("bgMusic");
+            audio.play();
+        }, { once: true });
     </script>
 
 </body>
 </html>
+a
