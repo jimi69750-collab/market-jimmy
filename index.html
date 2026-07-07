@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MARKET JIMMY</title>
     <style>
-        /* Gaya Dasar Website */
-        body {
+        /* Memastikan area layar 100% penuh terisi agar sensor ketukan merata */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             background: #0b0b0b;
+        }
+        body {
             color: white;
             font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 50px 20px;
-            margin: 0;
+            box-sizing: border-box;
             animation: fadeIn 1.5s ease-in-out;
-            /* Memastikan seluruh area layar bisa menerima ketukan musik */
-            min-height: 100vh;
         }
 
         /* Animasi Mengambang untuk Judul */
@@ -29,6 +32,21 @@
         p {
             font-size: 1.1rem;
             color: #ccc;
+            margin-bottom: 5px;
+        }
+
+        /* Gaya Teks Judul Lagu */
+        .song-info {
+            font-size: 0.85rem;
+            color: #00c8ff;
+            background: rgba(0, 200, 255, 0.1);
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
         }
 
         h2 {
@@ -38,7 +56,7 @@
             padding-bottom: 5px;
         }
 
-        /* Animasi Tombol WhatsApp Bergetar/Membesar */
+        /* Animasi Tombol WhatsApp Bergetar */
         .btn-wa {
             display: inline-block;
             padding: 15px 30px;
@@ -76,6 +94,10 @@
 
     <h1>🚀 MARKET JIMMY 🚀</h1>
     <p>Selamat datang di website resmi Market Jimmy.</p>
+    
+    <div class="song-info">
+        🎵 VACATION BIBLE + BROOKLYN BLOOD POP
+    </div>
 
     <h2>Produk</h2>
     <p>🎬 APK Movie - Rp2.000</p>
@@ -93,19 +115,19 @@
     </audio>
 
     <script>
-        // Fungsi untuk maksa putar musik
         function jalankanMusik() {
             var audio = document.getElementById("bgMusic");
             audio.play().catch(function(error) {
-                console.log("Musik ketahan browser: ", error);
+                console.log("Musik tertahan browser:", error);
             });
         }
 
-        /* JALUR VIP INTERAKSI: Begitu layar disentuh/diklik/dilepas sidik jarinya, langsung gas musiknya */
-        document.body.addEventListener('click', jalankanMusik, { once: true });
-        document.body.addEventListener('touchend', jalankanMusik, { once: true });
-        document.body.addEventListener('pointerdown', jalankanMusik, { once: true });
+        /* Pemicu otomatis pas layar disentuh/diklik pertama kali */
+        window.addEventListener('click', jalankanMusik, { once: true });
+        window.addEventListener('touchstart', jalankanMusik, { once: true });
+        window.addEventListener('touchend', jalankanMusik, { once: true });
     </script>
 
 </body>
 </html>
+q
