@@ -1,31 +1,128 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MARKET JIMMY</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKET JIMMY</title>
+    <style>
+        /* Gaya Dasar Website */
+        body {
+            background: #0b0b0b;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px 20px;
+            margin: 0;
+            /* Animasi masuk web halus */
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* 1. Animasi Mengambang untuk Judul */
+        h1 {
+            color: #00c8ff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        h2 {
+            margin-top: 40px;
+            border-bottom: 2px solid #00c8ff;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* 2. Animasi Tombol WhatsApp Bergetar/Membesar */
+        .btn-wa {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #00c8ff;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        /* 3. Tombol Kontrol Musik Floating di Pojok Kanan Bawah */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(34, 34, 34, 0.85);
+            border: 2px solid #00c8ff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
+            z-index: 9999;
+        }
+
+        /* --- LOGIK ANIMASI (Keyframes) --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 200, 255, 0.7); transform: scale(1); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 200, 255, 0); transform: scale(1.03); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 200, 255, 0); transform: scale(1); }
+        }
+    </style>
 </head>
+<body>
 
-<body style="background:#0b0b0b;color:white;font-family:Arial;text-align:center;padding:40px;">
+    <h1>🚀 MARKET JIMMY 🚀</h1>
+    <p>Selamat datang di website resmi Market Jimmy.</p>
 
-<h1 style="color:#00c8ff;">🚀 MARKET JIMMY 🚀</h1>
+    <h2>Produk</h2>
+    <p>🎬 APK Movie - Rp2.000</p>
+    <p>🖼️ APK HD Foto - Rp2.000</p>
+    <p>⚔️ JASA LOGO - Rp2.500</p>
 
-<p>Selamat datang di website resmi Market Jimmy.</p>
+    <br>
 
-<h2>Produk</h2>
+    <a href="https://wa.me/6287852990112" class="btn-wa">
+        Chat WhatsApp
+    </a>
 
-<p>🎬 APK Movie - Rp2.000</p>
-<p>🖼️ APK HD Foto - Rp2.000</p>
-<p>🪄JASA LOGO - Rp2.500</p>
+    <audio id="bgMusic" loop>
+        <source src="ssstik.io_1783396162890.mp3" type="audio/mpeg">
+    </audio>
 
+    <button class="music-btn" onclick="toggleMusic()">🎵 Putar Musik</button>
 
-<br>
-
-<a href="https://wa.me/6287852990112">
-<button style="padding:15px 30px;background:#00c8ff;border:none;border-radius:10px;">
-Chat WhatsApp
-</button>
-</a>
+    <script>
+        function toggleMusic() {
+            var audio = document.getElementById("bgMusic");
+            var btn = document.querySelector(".music-btn");
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = "⏸️ Pause Musik";
+            } else {
+                audio.pause();
+                btn.innerHTML = "🎵 Putar Musik";
+            }
+        }
+    </script>
 
 </body>
 </html>
