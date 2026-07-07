@@ -45,15 +45,50 @@
             border-radius: 20px;
             border: 1px solid rgba(0, 200, 255, 0.3);
             margin-top: 10px;
+            margin-bottom: 30px;
             letter-spacing: 0.5px;
             box-shadow: 0 0 10px rgba(0, 200, 255, 0.1);
         }
 
         h2 {
-            margin-top: 40px;
             border-bottom: 2px solid #00c8ff;
             display: inline-block;
             padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* --- DESAIN KOTAK PRODUK BARU --- */
+        .product-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .product-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 200, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: 0.3s ease;
+        }
+
+        /* Efek menyala pas kotak disentuh/di-hover */
+        .product-box:hover, .product-box:active {
+            border-color: #00c8ff;
+            background: rgba(0, 200, 255, 0.05);
+            transform: scale(1.02);
+        }
+
+        .product-price {
+            color: #00c8ff;
+            font-weight: bold;
         }
 
         /* Animasi Tombol WhatsApp Bergetar */
@@ -67,7 +102,7 @@
             font-size: 1rem;
             border-radius: 50px;
             text-decoration: none;
-            margin-top: 30px;
+            margin-top: 35px;
             transition: 0.3s;
             animation: pulse 2s infinite;
         }
@@ -95,21 +130,42 @@
     <h1>🚀 MARKET JIMMY 🚀</h1>
     <p>Selamat datang di website resmi Market Jimmy.</p>
     
+    <!-- Teks Judul Lagu -->
     <div class="song-info">
         🎵 VACATION BIBLE + BROOKLYN BLOOD POP
     </div>
 
     <h2>Produk</h2>
-    <p>🎬 APK Movie - Rp2.000</p>
-    <p>🖼️ APK HD Foto - Rp2.000</p>
-    <p>⚔️ JASA LOGO - Rp2.500</p>
+
+    <!-- Daftar Produk Menggunakan Kotak Rapi -->
+    <div class="product-container">
+        <div class="product-box">
+            <span>🎬 APK Movie</span>
+            <span class="product-price">Rp2.000</span>
+        </div>
+        <div class="product-box">
+            <span>🖼️ APK HD Foto</span>
+            <span class="product-price">Rp2.000</span>
+        </div>
+        <div class="product-box">
+            <span>⚔️ JASA LOGO</span>
+            <span class="product-price">Rp2.500</span>
+        </div>
+        <!-- Produk Baru -->
+        <div class="product-box" style="border-color: rgba(0, 200, 255, 0.4);">
+            <span>🤖 PANEL BOT LEGAL (1 Bulan)</span>
+            <span class="product-price">Rp5.000</span>
+        </div>
+    </div>
 
     <br>
 
+    <!-- Tombol WA -->
     <a href="https://wa.me/6287852990112" class="btn-wa">
         Chat WhatsApp
     </a>
 
+    <!-- Audio Element Catbox -->
     <audio id="bgMusic" loop>
         <source src="https://files.catbox.moe/pi0jsd.mp3" type="audio/mpeg">
     </audio>
@@ -122,7 +178,7 @@
             });
         }
 
-        /* Pemicu otomatis pas layar disentuh/diklik pertama kali */
+        /* Pemicu otomatis pas layar disentuh/diklik pertama kali di area mana saja */
         window.addEventListener('click', jalankanMusik, { once: true });
         window.addEventListener('touchstart', jalankanMusik, { once: true });
         window.addEventListener('touchend', jalankanMusik, { once: true });
@@ -130,4 +186,3 @@
 
 </body>
 </html>
-q
