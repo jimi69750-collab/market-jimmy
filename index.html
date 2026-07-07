@@ -13,8 +13,9 @@
             text-align: center;
             padding: 50px 20px;
             margin: 0;
-            /* Animasi masuk web halus */
             animation: fadeIn 1.5s ease-in-out;
+            /* Memastikan seluruh area layar bisa menerima ketukan musik */
+            min-height: 100vh;
         }
 
         /* Animasi Mengambang untuk Judul */
@@ -83,30 +84,28 @@
 
     <br>
 
-    <!-- Tombol WA -->
     <a href="https://wa.me/6287852990112" class="btn-wa">
         Chat WhatsApp
     </a>
 
-    <!-- Audio Otomatis Memakai Link Catbox Kamu & Mengulang Terus (Loop) -->
-    <audio id="bgMusic" autoplay loop>
+    <audio id="bgMusic" loop>
         <source src="https://files.catbox.moe/pi0jsd.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        /* TRIK SENYAP: Karena aturan browser melarang musik menyala sendiri sebelum disentuh,
-           kode ini akan memaksa musik langsung berputar begitu user menyentuh atau mengklik layar pertama kali. */
-        document.addEventListener('click', function() {
+        // Fungsi untuk maksa putar musik
+        function jalankanMusik() {
             var audio = document.getElementById("bgMusic");
-            audio.play();
-        }, { once: true });
+            audio.play().catch(function(error) {
+                console.log("Musik ketahan browser: ", error);
+            });
+        }
 
-        document.addEventListener('touchstart', function() {
-            var audio = document.getElementById("bgMusic");
-            audio.play();
-        }, { once: true });
+        /* JALUR VIP INTERAKSI: Begitu layar disentuh/diklik/dilepas sidik jarinya, langsung gas musiknya */
+        document.body.addEventListener('click', jalankanMusik, { once: true });
+        document.body.addEventListener('touchend', jalankanMusik, { once: true });
+        document.body.addEventListener('pointerdown', jalankanMusik, { once: true });
     </script>
 
 </body>
 </html>
-a
