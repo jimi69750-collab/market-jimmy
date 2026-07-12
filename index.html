@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moshi App - Exclusive Dashboard</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>MOSHI - By JIMMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
+        /* === VARIABEL WARNA & TEMA === */
         :root {
-            --bg-main: #f4f7f6;
-            --bg-card: #ffffff;
-            --text-main: #2d3436;
-            --text-muted: #636e72;
-            --cyan: #00bcd4;
-            --cyan-hover: #0097a7;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            --shadow-cyan: 0 4px 15px rgba(0, 188, 212, 0.3);
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --cyan-primary: #00d2ff;
+            --cyan-dark: #0096c7;
+            --cyan-glow: rgba(0, 210, 255, 0.4);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-soft: 8px 8px 16px #e2e8f0, -8px -8px 16px #ffffff;
+            --shadow-inset: inset 4px 4px 8px #e2e8f0, inset -4px -4px 8px #ffffff;
         }
 
         * {
@@ -24,514 +24,449 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
         }
 
         body {
-            background-color: var(--bg-main);
+            background-color: var(--bg-color);
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        /* Mobile Container Simulation */
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            background-color: var(--bg-main);
-            position: relative;
             overflow-x: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* === DEKORASI CYAN KOMPLEKS === */
+        .cyan-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.3;
         }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease forwards;
-        }
+        .blob-1 { top: -50px; left: -50px; width: 200px; height: 200px; background: var(--cyan-primary); }
+        .blob-2 { bottom: -50px; right: -50px; width: 300px; height: 300px; background: var(--cyan-dark); }
 
-        /* --- LOGIN PAGE --- */
-        #login-page {
+        /* === LOCKSCREEN === */
+        #lockscreen {
+            height: 100vh;
+            width: 100vw;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
-            padding: 20px;
-            background: linear-gradient(135deg, #ffffff, #e0f7fa);
+            align-items: center;
+            background: var(--bg-color);
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 100;
+            transition: top 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
-        .logo-container {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .logo-container h1 {
-            font-size: 2.5rem;
+        .clock-large {
+            font-size: 4rem;
+            font-weight: 700;
             color: var(--text-main);
+            text-shadow: 0 0 20px var(--cyan-glow);
             letter-spacing: 2px;
         }
 
-        .logo-container h1 span {
-            color: var(--cyan);
-        }
-
-        .login-card {
-            background: var(--bg-card);
-            width: 100%;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            border-top: 4px solid var(--cyan);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        .date-text {
+            font-size: 1.2rem;
             color: var(--text-muted);
+            margin-bottom: 50px;
         }
 
-        .input-group input {
-            width: 100%;
-            padding: 15px 15px 15px 45px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 14px;
-            outline: none;
-            background: #fdfdfd;
+        .branding {
+            text-align: center;
+            margin-bottom: 60px;
         }
 
-        .input-group input:focus {
-            border-color: var(--cyan);
-            box-shadow: 0 0 5px rgba(0, 188, 212, 0.2);
+        .branding h1 {
+            font-size: 2.5rem;
+            color: var(--cyan-dark);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        .branding p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Tombol Persegi Panjang Lockscreen */
+        .btn-masuk {
+            padding: 15px 60px;
+            background: var(--cyan-primary);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px; /* Persegi Panjang */
+            cursor: pointer;
+            box-shadow: 0 10px 20px var(--cyan-glow);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-masuk:hover {
+            transform: scale(1.05);
+            background: var(--cyan-dark);
+        }
+
+        /* === HALAMAN UTAMA (DASHBOARD) === */
+        #dashboard {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 30px;
+            border-left: 5px solid var(--cyan-primary);
+        }
+
+        header h2 {
+            color: var(--cyan-dark);
+            font-size: 1.5rem;
+        }
+
+        .clock-small {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            background: var(--bg-color);
+            padding: 5px 15px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-inset);
+        }
+
+        /* Grid Kotak Fitur */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            flex-grow: 1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-bottom: 4px solid var(--cyan-primary);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h3::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--cyan-primary);
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 8px var(--cyan-primary);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
         .btn-cyan {
-            width: 100%;
-            padding: 15px;
-            background: var(--cyan);
+            background: var(--cyan-primary);
             color: white;
+            padding: 12px;
             border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 16px;
+            border-radius: 10px;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: var(--shadow-cyan);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 210, 255, 0.3);
         }
 
         .btn-cyan:hover {
-            background: var(--cyan-hover);
+            background: var(--cyan-dark);
+            box-shadow: 0 6px 15px rgba(0, 150, 199, 0.4);
         }
 
-        /* --- DASHBOARD PAGE --- */
-        #dashboard-page {
-            display: none;
-            padding: 20px;
-            padding-bottom: 80px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .header h2 {
-            font-size: 1.8rem;
-        }
-        .header h2 span { color: var(--cyan); }
-
-        .info-card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 5px solid var(--cyan);
-        }
-
-        .clock {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--cyan);
-        }
-
-        .device-info {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* Menu Grid */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .menu-item {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 15px;
+        /* Footer */
+        footer {
             text-align: center;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .menu-item:hover {
-            border-color: var(--cyan);
-            transform: translateY(-5px);
-        }
-
-        .menu-item i {
-            font-size: 2rem;
-            color: var(--cyan);
-            margin-bottom: 10px;
-        }
-
-        /* Sections (Tools, Quran, Downloader) */
-        .content-section {
-            display: none;
-            background: var(--bg-card);
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: var(--text-main);
-            border-bottom: 2px solid var(--cyan);
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
-        /* Quran Styles */
-        .quran-item {
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
-        }
-        .quran-item:last-child { border-bottom: none; }
-        
-        .arab-text {
-            font-size: 1.5rem;
-            text-align: right;
-            margin-bottom: 5px;
-            color: var(--text-main);
-            direction: rtl;
-        }
-        
-        .latin-text {
+            margin-top: 30px;
             font-size: 0.9rem;
-            color: var(--cyan);
-            font-style: italic;
+            font-weight: 600;
+            color: var(--cyan-dark);
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow-soft);
         }
 
-        /* Bottom Nav */
-        .bottom-nav {
+        /* === MODAL POPUP (UNTUK FITUR) === */
+        .modal {
+            display: none;
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 450px;
-            background: var(--bg-card);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        .nav-item {
-            text-align: center;
+        .modal-content {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            border-top: 5px solid var(--cyan-primary);
+            animation: popIn 0.3s ease;
+        }
+
+        .modal-content.large {
+            max-width: 95%;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            font-weight: bold;
             color: var(--text-muted);
             cursor: pointer;
         }
 
-        .nav-item.active {
-            color: var(--cyan);
+        .iframe-container {
+            flex-grow: 1;
+            width: 100%;
+            border: 2px solid var(--bg-color);
+            border-radius: 10px;
+            margin-top: 15px;
         }
-        
-        .nav-item i { font-size: 1.2rem; margin-bottom: 3px; }
-        .nav-item span { display: block; font-size: 0.75rem; }
-
     </style>
 </head>
 <body>
 
-<div class="app-container">
+    <!-- Latar Belakang Abstrak Cyan -->
+    <div class="cyan-blob blob-1"></div>
+    <div class="cyan-blob blob-2"></div>
 
-    <!-- LOGIN PAGE -->
-    <section id="login-page" class="fade-in">
-        <div class="logo-container">
-            <h1>MOSH<span>I</span></h1>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Exclusive Access Only</p>
+    <!-- ================= HALAMAN LOCKSCREEN ================= -->
+    <div id="lockscreen">
+        <div class="clock-large" id="jam-lockscreen">00:00:00</div>
+        <div class="date-text" id="tanggal-lockscreen">Hari, Tanggal</div>
+        
+        <div class="branding">
+            <h1>MOSHI</h1>
+            <p>Owner: JIMMY</p>
         </div>
+        
+        <button class="btn-masuk" onclick="masukApp()">MASUK</button>
+    </div>
 
-        <div class="login-card">
-            <h3 style="margin-bottom: 20px; font-size: 1.1rem;">Welcome Back</h3>
-            <p style="font-size: 0.8rem; color: #e74c3c; margin-bottom: 15px; display: none;" id="error-msg">Akses Ditolak! Hanya owner yang bisa masuk.</p>
+    <!-- ================= HALAMAN UTAMA (DASHBOARD) ================= -->
+    <div id="dashboard">
+        <header>
+            <h2>MOSHI PANEL</h2>
+            <div class="clock-small" id="jam-dashboard">00:00:00</div>
+        </header>
+
+        <div class="grid-container">
             
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" id="username" placeholder="Username (Root)" autocomplete="off">
+            <!-- Kotak 1: Remove BG -->
+            <div class="card">
+                <div>
+                    <h3>Remove BG</h3>
+                    <p>Hapus latar belakang foto seketika dengan AI. Mendukung berbagai software dan format.</p>
+                </div>
+                <button class="btn-cyan" onclick="bukaModal('modal-removebg')">Buka Alat Remove BG</button>
             </div>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Password">
+
+            <!-- Kotak 2: TikTok Downloader -->
+            <div class="card">
+                <div>
+                    <h3>TikTok Downloader</h3>
+                    <p>Unduh video TikTok, hapus latar belakang, dan convert menjadi .MP3 tanpa watermark.</p>
+                </div>
+                <button class="btn-cyan" onclick="bukaModal('modal-tiktok')">Buka Downloader</button>
             </div>
+
+            <!-- Kotak 3: APK PREMIUM -->
+            <div class="card">
+                <div>
+                    <h3>APK PREMIUM</h3>
+                    <p>Kumpulan aplikasi premium dan modifikasi khusus pilihan Moshi.</p>
+                </div>
+                <button class="btn-cyan" onclick="bukaModal('modal-apk')">Buka Menu APK</button>
+            </div>
+
+            <!-- Kotak 4: Al-Qur'an Online -->
+            <div class="card">
+                <div>
+                    <h3>Al-Qur'an Online</h3>
+                    <p>Baca Al-Qur'an digital tanpa suara, lengkap dengan teks Arab dan bacaan Latin.</p>
+                </div>
+                <button class="btn-cyan" onclick="bukaModal('modal-quran')">Baca Al-Qur'an</button>
+            </div>
+
+            <!-- Kotak 5: Hubungi Owner -->
+            <div class="card">
+                <div>
+                    <h3>Hubungi Owner untuk Update</h3>
+                    <p>Dapatkan versi terbaru aplikasi atau laporkan bug langsung ke Owner Jimmy.</p>
+                </div>
+                <a href="https://wa.me/6287852990112" target="_blank" class="btn-cyan">Hubungi WhatsApp</a>
+            </div>
+
+        </div>
+
+        <footer>
+            fungsi apk = apk ini di buat untuk membantu sesama orang.
+        </footer>
+    </div>
+
+    <!-- ================= MODALS (POPUP FITUR) ================= -->
+
+    <!-- Modal APK Premium -->
+    <div class="modal" id="modal-apk">
+        <div class="modal-content">
+            <span class="close-btn" onclick="tutupModal('modal-apk')">&times;</span>
+            <h3 style="color: var(--cyan-dark); margin-bottom: 20px;">Pilih APK Premium</h3>
+            <a href="https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file" target="_blank" class="btn-cyan" style="margin-bottom: 15px;">APK MOVIE</a>
+            <a href="https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936" target="_blank" class="btn-cyan">APK HD FOTO</a>
+        </div>
+    </div>
+
+    <!-- Modal Remove BG -->
+    <div class="modal" id="modal-removebg">
+        <div class="modal-content large">
+            <span class="close-btn" onclick="tutupModal('modal-removebg')">&times;</span>
+            <h3 style="color: var(--cyan-dark);">Remove BG Terintegrasi</h3>
+            <p style="font-size: 12px; color: var(--text-muted);">Didukung oleh Removal.ai (Seperti di sistem Moshi kamu)</p>
+            <iframe class="iframe-container" src="https://removal.ai/upload/"></iframe>
+            <!-- Fallback jika iframe di block browser -->
+            <a href="https://removal.ai/" target="_blank" class="btn-cyan" style="margin-top:10px;">Buka di Tab Baru (Jika Gagal Muat)</a>
+        </div>
+    </div>
+
+    <!-- Modal TikTok -->
+    <div class="modal" id="modal-tiktok">
+        <div class="modal-content large">
+            <span class="close-btn" onclick="tutupModal('modal-tiktok')">&times;</span>
+            <h3 style="color: var(--cyan-dark);">TikTok Downloader & MP3</h3>
+            <iframe class="iframe-container" src="https://tiktokio.com/id/"></iframe>
+            <a href="https://tiktokio.com/id/" target="_blank" class="btn-cyan" style="margin-top:10px;">Buka di Tab Baru (Jika Gagal Muat)</a>
+        </div>
+    </div>
+
+    <!-- Modal Al-Quran -->
+    <div class="modal" id="modal-quran">
+        <div class="modal-content large">
+            <span class="close-btn" onclick="tutupModal('modal-quran')">&times;</span>
+            <h3 style="color: var(--cyan-dark);">Al-Qur'an (Arab & Latin)</h3>
+            <!-- Menggunakan LiteQuran karena fokus ke teks Arab + Latin murni tanpa pemutar suara yang mengganggu -->
+            <iframe class="iframe-container" src="https://litequran.net/"></iframe>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // 1. Fungsi Jam Real-Time
+        function updateJam() {
+            const sekarang = new Date();
             
-            <button class="btn-cyan" onclick="attemptLogin()">SIGN IN <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></button>
-        </div>
-    </section>
-
-    <!-- DASHBOARD PAGE -->
-    <section id="dashboard-page">
-        <div class="header fade-in">
-            <h2>MOSH<span>I</span></h2>
-            <div class="profile-pic" style="width: 40px; height: 40px; background: var(--cyan); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                J
-            </div>
-        </div>
-
-        <!-- Info Card (Clock & Device) -->
-        <div class="info-card fade-in" style="animation-delay: 0.1s;">
-            <div>
-                <p style="font-size: 0.85rem; color: var(--text-muted);">Current Time</p>
-                <div class="clock" id="realtime-clock">00:00:00</div>
-            </div>
-            <div style="text-align: right;">
-                <p style="font-size: 0.85rem; color: var(--text-muted);">Device Detected</p>
-                <div class="device-info" id="device-name"><i class="fas fa-mobile-alt"></i> Scanning...</div>
-            </div>
-        </div>
-
-        <!-- Default Home View -->
-        <div id="view-home" class="content-section active">
-            <h3 class="section-title">Dashboard Tools</h3>
-            <div class="menu-grid">
-                <div class="menu-item" onclick="switchView('view-downloader')">
-                    <i class="fab fa-tiktok"></i>
-                    <p style="font-size: 0.85rem; font-weight: 600;">Downloader</p>
-                </div>
-                <div class="menu-item" onclick="switchView('view-quran')">
-                    <i class="fas fa-book-open"></i>
-                    <p style="font-size: 0.85rem; font-weight: 600;">Al-Qur'an</p>
-                </div>
-                <div class="menu-item" onclick="alert('Fitur keamanan aktif. Sistem aman.')">
-                    <i class="fas fa-shield-alt"></i>
-                    <p style="font-size: 0.85rem; font-weight: 600;">Security</p>
-                </div>
-                <div class="menu-item" onclick="alert('Fitur IP Tracker sedang maintenance.')">
-                    <i class="fas fa-satellite-dish"></i>
-                    <p style="font-size: 0.85rem; font-weight: 600;">IP Tools</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Downloader View -->
-        <div id="view-downloader" class="content-section">
-            <h3 class="section-title">Sosmed Downloader</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Download Video TikTok & Instagram tanpa watermark.</p>
+            // Format Waktu
+            const jam = String(sekarang.getHours()).padStart(2, '0');
+            const menit = String(sekarang.getMinutes()).padStart(2, '0');
+            const detik = String(sekarang.getSeconds()).padStart(2, '0');
+            const waktuString = `${jam}:${menit}:${detik}`;
             
-            <div class="input-group">
-                <i class="fas fa-link"></i>
-                <input type="text" id="url-input" placeholder="Tempel URL Video disini...">
-            </div>
+            // Format Tanggal
+            const opsiTanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const tanggalString = sekarang.toLocaleDateString('id-ID', opsiTanggal);
+
+            // Update elemen
+            document.getElementById("jam-lockscreen").innerText = waktuString;
+            document.getElementById("jam-dashboard").innerText = waktuString;
+            document.getElementById("tanggal-lockscreen").innerText = tanggalString;
+        }
+
+        setInterval(updateJam, 1000);
+        updateJam(); // Panggil sekali agar tidak delay 1 detik
+
+        // 2. Fungsi Masuk (Transisi Lockscreen ke Dashboard)
+        function masukApp() {
+            const lockscreen = document.getElementById("lockscreen");
+            const dashboard = document.getElementById("dashboard");
+
+            // Animasi geser ke atas
+            lockscreen.style.top = "-100vh";
             
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-cyan" onclick="startDownload('Tiktok')" style="background: #000; flex: 1;"><i class="fab fa-tiktok"></i> TikTok</button>
-                <button class="btn-cyan" onclick="startDownload('Instagram')" style="background: #e1306c; flex: 1;"><i class="fab fa-instagram"></i> IG</button>
-            </div>
-            <p id="download-status" style="font-size: 0.8rem; color: var(--cyan); margin-top: 15px; display: none;">Menghubungkan ke server api...</p>
-        </div>
-
-        <!-- Al-Quran View -->
-        <div id="view-quran" class="content-section">
-            <h3 class="section-title">Al-Qur'an Digital</h3>
-            <div id="quran-container">
-                <!-- Data Qur'an di-render oleh JS -->
-            </div>
-        </div>
-
-        <!-- Bottom Navigation -->
-        <div class="bottom-nav">
-            <div class="nav-item active" onclick="switchView('view-home', this)">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </div>
-            <div class="nav-item" onclick="switchView('view-downloader', this)">
-                <i class="fas fa-download"></i>
-                <span>Download</span>
-            </div>
-            <div class="nav-item" onclick="switchView('view-quran', this)">
-                <i class="fas fa-book"></i>
-                <span>Qur'an</span>
-            </div>
-            <div class="nav-item" onclick="location.reload()">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Exit</span>
-            </div>
-        </div>
-    </section>
-
-</div>
-
-<script>
-    // --- 1. SYSTEM SECURITY & LOGIN ---
-    function attemptLogin() {
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
-        const errorMsg = document.getElementById('error-msg');
-
-        // GANTI INI UNTUK MENGATUR AKUN (Hanya kamu yang tahu)
-        if(user.toLowerCase() === 'jimmy' && pass === 'moshi123') {
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('dashboard-page').style.display = 'block';
-            initDashboard();
-        } else {
-            errorMsg.style.display = 'block';
-            document.getElementById('password').value = '';
+            setTimeout(() => {
+                lockscreen.style.display = "none";
+                dashboard.style.display = "flex";
+            }, 600); // Sesuaikan dengan durasi CSS transition
         }
-    }
 
-    // --- 2. REAL-TIME CLOCK ---
-    function initDashboard() {
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('realtime-clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
-        }, 1000);
-        detectDevice();
-        renderQuran();
-    }
-
-    // --- 3. DEVICE DETECTION (Baca OS / HP) ---
-    function detectDevice() {
-        const ua = navigator.userAgent;
-        let device = "Unknown Device";
-        
-        if (/android/i.test(ua)) {
-            // Mencoba mendapatkan model dari User-Agent (meskipun modern browser menyembunyikannya)
-            let match = ua.match(/Android.*?; (.*?) Build/i);
-            device = match ? match[1] : "Android Smartphone";
-        } else if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
-            device = "Apple iPhone/iPad";
-        } else if (/Windows/.test(ua)) {
-            device = "Windows Desktop/Laptop";
-        } else if (/Mac OS/.test(ua)) {
-            device = "Mac OS Device";
+        // 3. Fungsi Kendali Modal (Popup)
+        function bukaModal(id) {
+            document.getElementById(id).style.display = "flex";
         }
-        
-        document.getElementById('device-name').innerHTML = `<i class="fas fa-mobile-alt"></i> ${device}`;
-    }
 
-    // --- 4. NAVIGATION SYSTEM ---
-    function switchView(viewId, navElement = null) {
-        // Sembunyikan semua section
-        document.querySelectorAll('.content-section').forEach(el => {
-            el.classList.remove('active');
-        });
-        
-        // Tampilkan yang dipilih
-        document.getElementById(viewId).classList.add('active');
-
-        // Update indikator navbar bawah
-        if(navElement) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            navElement.classList.add('active');
+        function tutupModal(id) {
+            document.getElementById(id).style.display = "none";
         }
-    }
 
-    // --- 5. FAKE DOWNLOADER LOGIC (Butuh API Backend) ---
-    function startDownload(platform) {
-        const url = document.getElementById('url-input').value;
-        if(!url) {
-            alert('Masukkan link video dulu ya!');
-            return;
+        // Tutup modal jika user klik area luar kotak putih
+        window.onclick = function(event) {
+            const modals = document.getElementsByClassName('modal');
+            for (let i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
+            }
         }
-        
-        const status = document.getElementById('download-status');
-        status.style.display = 'block';
-        status.innerText = `Memproses link ${platform}... (Butuh Backend API)`;
-        
-        // Simulasi loading
-        setTimeout(() => {
-            status.innerText = "Error: Fitur ini membutuhkan REST API/Backend Node.js untuk mengekstrak video. Tampilan Front-End sudah siap.";
-            status.style.color = "#e74c3c";
-        }, 2000);
-    }
-
-    // --- 6. AL-QURAN DIGITAL (Arab + Latin) ---
-    const quranData = [
-        {
-            surah: "Al-Fatihah",
-            ayat: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
-            latin: "Bismillahir-rahmanir-rahim"
-        },
-        {
-            surah: "Al-Ikhlas",
-            ayat: "قُلْ هُوَ اللَّهُ أَحَدٌ",
-            latin: "Qul huwal laahu ahad"
-        },
-        {
-            surah: "Al-Falaq",
-            ayat: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ",
-            latin: "Qul a'uudzu birabbil falaq"
-        },
-        {
-            surah: "An-Nas",
-            ayat: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
-            latin: "Qul a'uudzu birabbin naas"
-        }
-    ];
-
-    function renderQuran() {
-        const container = document.getElementById('quran-container');
-        let html = '';
-        quranData.forEach(q => {
-            html += `
-                <div class="quran-item">
-                    <p style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px;">Surah ${q.surah}</p>
-                    <div class="arab-text">${q.ayat}</div>
-                    <div class="latin-text">${q.latin}</div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // Eksekusi trigger enter pada password
-    document.getElementById("password").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            attemptLogin();
-        }
-    });
-</script>
+    </script>
 
 </body>
 </html>
