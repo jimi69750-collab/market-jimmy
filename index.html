@@ -1,682 +1,689 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MOSHI - Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background: #f5f7fa;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
+<title>MOSHI | Owner JIMMY</title>
 
-        /* ===== LOCKSCREEN ===== */
-        #lockscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #ffffff 0%, #eef2f7 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            padding: 24px;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        #lockscreen.hide {
-            opacity: 0;
-            transform: scale(1.05);
-            pointer-events: none;
-        }
+<style>
 
-        .lock-icon {
-            font-size: 52px;
-            color: #00bcd4;
-            margin-bottom: 20px;
-            background: rgba(0, 188, 212, 0.12);
-            width: 90px;
-            height: 90px;
-            border-radius: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-        .lock-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1a2332;
-            letter-spacing: 2px;
-        }
+body{
 
-        .lock-title span {
-            color: #00bcd4;
-        }
+background:#eefcff;
 
-        .lock-sub {
-            color: #6b7a8f;
-            font-size: 14px;
-            margin-top: 4px;
-            letter-spacing: 1px;
-        }
+overflow-x:hidden;
 
-        .lock-time {
-            font-size: 62px;
-            font-weight: 300;
-            color: #0b1a2a;
-            margin-top: 24px;
-            letter-spacing: 4px;
-            font-feature-settings: "tnum";
-        }
+color:#222;
 
-        .lock-date {
-            font-size: 16px;
-            color: #4a5b6e;
-            margin-top: 4px;
-            letter-spacing: 0.5px;
-        }
+}
 
-        .lock-btn {
-            margin-top: 48px;
-            background: #00bcd4;
-            color: #fff;
-            border: none;
-            padding: 16px 58px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 14px;
-            cursor: pointer;
-            box-shadow: 0 12px 28px rgba(0, 188, 212, 0.35);
-            transition: 0.25s ease;
-            letter-spacing: 1.5px;
-            width: 220px;
-            text-align: center;
-        }
+.page{
 
-        .lock-btn:active {
-            transform: scale(0.96);
-            box-shadow: 0 6px 16px rgba(0, 188, 212, 0.25);
-        }
+display:none;
 
-        /* ===== MAIN APP ===== */
-        #app {
-            max-width: 420px;
-            width: 100%;
-            background: #ffffff;
-            border-radius: 36px 36px 28px 28px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-            padding: 20px 18px 28px;
-            display: none;
-            margin: 0 auto;
-            position: relative;
-        }
+min-height:100vh;
 
-        #app.show {
-            display: block;
-        }
+padding:20px;
 
-        /* Header */
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 14px;
-            border-bottom: 1px solid #eef2f6;
-        }
+}
 
-        .app-brand {
-            font-size: 26px;
-            font-weight: 700;
-            color: #0f1a2b;
-        }
+.active{
 
-        .app-brand span {
-            color: #00bcd4;
-        }
+display:block;
 
-        .app-brand small {
-            font-size: 13px;
-            font-weight: 400;
-            color: #6b7f94;
-            margin-left: 6px;
-        }
+animation:fade .4s;
 
-        .header-time {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1a2a3e;
-            background: #f0f4fa;
-            padding: 6px 16px;
-            border-radius: 40px;
-            letter-spacing: 0.5px;
-        }
+}
 
-        /* Owner tag */
-        .owner-tag {
-            text-align: right;
-            font-size: 13px;
-            color: #00a3b8;
-            font-weight: 500;
-            margin-top: 2px;
-            letter-spacing: 0.3px;
-        }
+@keyframes fade{
 
-        .owner-tag i {
-            margin-right: 4px;
-        }
+from{
 
-        /* Grid 2 kolom */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-top: 18px;
-        }
+opacity:0;
 
-        .card {
-            background: #f8faff;
-            border-radius: 22px;
-            padding: 18px 12px 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
-            border: 1px solid #eef4fc;
-            transition: 0.2s ease;
-            cursor: pointer;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 110px;
-            justify-content: center;
-        }
+transform:translateY(15px);
 
-        .card:active {
-            transform: scale(0.97);
-            background: #f0f8ff;
-        }
+}
 
-        .card i {
-            font-size: 30px;
-            color: #00bcd4;
-            margin-bottom: 8px;
-            background: rgba(0, 188, 212, 0.08);
-            padding: 12px;
-            border-radius: 18px;
-            width: 56px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+to{
 
-        .card-label {
-            font-size: 15px;
-            font-weight: 600;
-            color: #14273e;
-            letter-spacing: 0.2px;
-        }
+opacity:1;
 
-        .card-sub {
-            font-size: 11px;
-            color: #6e839a;
-            margin-top: 2px;
-            font-weight: 400;
-        }
+transform:translateY(0);
 
-        .card-cyan {
-            background: #00bcd4;
-            border: none;
-        }
+}
 
-        .card-cyan i {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-        }
+}
 
-        .card-cyan .card-label {
-            color: #fff;
-        }
+.lockscreen{
 
-        .card-cyan .card-sub {
-            color: rgba(255, 255, 255, 0.75);
-        }
+height:100vh;
 
-        /* full width card */
-        .card-full {
-            grid-column: 1 / -1;
-            flex-direction: row;
-            gap: 16px;
-            padding: 14px 18px;
-            min-height: 70px;
-            justify-content: flex-start;
-            background: #f8fcff;
-        }
+display:flex;
 
-        .card-full i {
-            margin-bottom: 0;
-            width: 48px;
-            height: 48px;
-            font-size: 24px;
-        }
+justify-content:center;
 
-        .card-full .card-label {
-            font-size: 16px;
-        }
+align-items:center;
 
-        /* ===== SUB PAGE (APK PREMIUM) ===== */
-        #subpage {
-            display: none;
-            padding: 10px 0 6px;
-        }
+flex-direction:column;
 
-        #subpage.show {
-            display: block;
-        }
+background:linear-gradient(180deg,#ffffff,#dffcff);
 
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #00bcd4;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            margin-bottom: 18px;
-            padding: 8px 0;
-            transition: 0.2s;
-        }
+}
 
-        .back-btn:active {
-            opacity: 0.6;
-        }
+.logo{
 
-        .sub-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 6px;
-        }
+font-size:55px;
 
-        .sub-card {
-            background: #00bcd4;
-            border-radius: 24px;
-            padding: 28px 12px;
-            text-align: center;
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0, 188, 212, 0.25);
-            transition: 0.2s;
-        }
+font-weight:700;
 
-        .sub-card:active {
-            transform: scale(0.96);
-        }
+color:#00cbe8;
 
-        .sub-card i {
-            font-size: 38px;
-            margin-bottom: 10px;
-            display: block;
-        }
+}
 
-        .sub-card .label {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
+.owner{
 
-        .sub-card .desc {
-            font-size: 12px;
-            opacity: 0.85;
-            margin-top: 2px;
-        }
+margin-top:5px;
 
-        /* ===== AL-QURAN ===== */
-        .quran-embed {
-            margin-top: 18px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid #e2ebf6;
-            height: 400px;
-            background: #fafcff;
-        }
+color:#666;
 
-        .quran-embed iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+}
 
-        /* ===== HUBUNGI OWNER ===== */
-        .wa-card {
-            background: #25d366;
-            color: #fff;
-            border: none;
-            margin-top: 14px;
-            padding: 16px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-weight: 600;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
-        }
+#clock{
 
-        .wa-card:active {
-            transform: scale(0.97);
-        }
+font-size:52px;
 
-        .wa-card i {
-            font-size: 28px;
-        }
+font-weight:bold;
 
-        /* footer */
-        .footer-credit {
-            margin-top: 24px;
-            font-size: 12px;
-            color: #98aec6;
-            text-align: center;
-            letter-spacing: 0.3px;
-            border-top: 1px solid #eef3f9;
-            padding-top: 16px;
-        }
+margin-top:40px;
 
-        .footer-credit strong {
-            color: #00bcd4;
-            font-weight: 600;
-        }
+}
 
-        /* responsive */
-        @media (max-width: 380px) {
-            .lock-time {
-                font-size: 44px;
-            }
-            .card i {
-                width: 44px;
-                height: 44px;
-                font-size: 22px;
-            }
-            .card-label {
-                font-size: 13px;
-            }
-        }
-    </style>
+#date{
+
+margin-top:8px;
+
+color:#666;
+
+}
+
+.enter{
+
+margin-top:40px;
+
+width:220px;
+
+height:60px;
+
+border:none;
+
+border-radius:18px;
+
+background:#00d8ff;
+
+color:white;
+
+font-size:20px;
+
+font-weight:bold;
+
+box-shadow:0 0 25px rgba(0,220,255,.5);
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.enter:hover{
+
+transform:scale(1.04);
+
+}
+
+.header{
+
+background:white;
+
+padding:22px;
+
+border-radius:25px;
+
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+}
+
+.header h2{
+
+color:#00cbe8;
+
+}
+
+.header p{
+
+color:#666;
+
+margin-top:5px;
+
+}
+
+#clock2{
+
+font-size:32px;
+
+font-weight:bold;
+
+margin-top:10px;
+
+}
+
+#date2{
+
+margin-top:5px;
+
+color:#888;
+
+}
+
+.profile{
+
+margin-top:18px;
+
+background:white;
+
+padding:18px;
+
+border-radius:20px;
+
+box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.avatar{
+
+width:65px;
+
+height:65px;
+
+border-radius:50%;
+
+background:#00d8ff;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+color:white;
+
+font-size:30px;
+
+font-weight:bold;
+
+}
+
+.grid{
+
+margin-top:20px;
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+}
+
+.card{
+
+background:white;
+
+border-radius:20px;
+
+padding:22px;
+
+text-align:center;
+
+cursor:pointer;
+
+transition:.25s;
+
+box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+}
+
+.card:hover{
+
+background:#e8fdff;
+
+transform:translateY(-5px);
+
+}
+
+.card span{
+
+font-size:38px;
+
+display:block;
+
+margin-bottom:12px;
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <!-- ===== LOCKSCREEN ===== -->
-    <div id="lockscreen">
-        <div class="lock-icon">
-            <i class="fas fa-shield-alt"></i>
-        </div>
-        <div class="lock-title">MOSHI<span>.</span></div>
-        <div class="lock-sub">by JIMMY • protected</div>
+<div class="page active lockscreen" id="lock">
 
-        <div class="lock-time" id="lockTime">--:--:--</div>
-        <div class="lock-date" id="lockDate">Memuat...</div>
+<div class="logo">
 
-        <button class="lock-btn" id="unlockBtn">
-            <i class="fas fa-arrow-right" style="margin-right:10px;"></i> MASUK
-        </button>
+MOSHI
 
-        <div style="margin-top: 30px; font-size: 12px; color: #a0b3c9; letter-spacing: 0.3px;">
-            <i class="fas fa-lock" style="margin-right:4px;"></i> terkunci • JIMMY
-        </div>
-    </div>
+</div>
 
-    <!-- ===== MAIN APP ===== -->
-    <div id="app">
-        <!-- Header -->
-        <div class="app-header">
-            <div>
-                <div class="app-brand">MOSHI<span>.</span> <small>v2</small></div>
-                <div class="owner-tag"><i class="fas fa-crown"></i> owner: JIMMY</div>
-            </div>
-            <div class="header-time" id="headerTime">--:--</div>
-        </div>
+<div class="owner">
 
-        <!-- Grid utama -->
-        <div class="grid-2" id="mainGrid">
+Owner : JIMMY
 
-            <!-- Remove BG -->
-            <div class="card" id="removeBgBtn">
-                <i class="fas fa-eraser"></i>
-                <div class="card-label">Remove BG</div>
-                <div class="card-sub">hapus latar • AI</div>
-            </div>
+</div>
 
-            <!-- Downloader TikTok -->
-            <div class="card" id="tiktokBtn">
-                <i class="fab fa-tiktok"></i>
-                <div class="card-label">TikTok Download</div>
-                <div class="card-sub">MP3/MP4 • no watermark</div>
-            </div>
+<div id="clock">
 
-            <!-- APK PREMIUM (trigger subpage) -->
-            <div class="card card-cyan" id="apkPremiumBtn">
-                <i class="fas fa-gem"></i>
-                <div class="card-label">APK PREMIUM</div>
-                <div class="card-sub">movie • foto • pro</div>
-            </div>
+00:00:00
 
-            <!-- Al-Qur'an Online -->
-            <div class="card" id="quranBtn">
-                <i class="fas fa-quran"></i>
-                <div class="card-label">Al-Qur'an</div>
-                <div class="card-sub">latin + offline</div>
-            </div>
+</div>
 
-            <!-- Hubungi Owner -->
-            <div class="card-full" id="waOwnerBtn">
-                <i class="fas fa-phone-alt" style="background:#25d366; color:#fff;"></i>
-                <div>
-                    <div class="card-label">Hubungi Owner</div>
-                    <div class="card-sub">update • support • reseller</div>
-                </div>
-                <i class="fas fa-chevron-right" style="margin-left:auto; color:#b0c8df; font-size:14px;"></i>
-            </div>
+<div id="date">
 
-        </div>
+Loading...
 
-        <!-- ===== SUBPAGE: APK PREMIUM ===== -->
-        <div id="subpage">
-            <div class="back-btn" id="backToMain">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </div>
-            <div class="sub-grid">
-                <div class="sub-card" id="apkMovie">
-                    <i class="fas fa-film"></i>
-                    <div class="label">APK MOVIE</div>
-                    <div class="desc">Moviebox 2026 mod</div>
-                </div>
-                <div class="sub-card" id="apkHdFoto">
-                    <i class="fas fa-image"></i>
-                    <div class="label">APK HD FOTO</div>
-                    <div class="desc">foto premium • pro</div>
-                </div>
-            </div>
-        </div>
+</div>
 
-        <!-- Al-Qur'an embed (hidden by default) -->
-        <div id="quranContainer" style="display:none; margin-top:18px;">
-            <div class="quran-embed">
-                <iframe src="https://quran.kemenag.go.id/" loading="lazy"></iframe>
-            </div>
-        </div>
+<button class="enter" onclick="masuk()">
 
-        <!-- Footer -->
-        <div class="footer-credit">
-            <i class="fas fa-heart" style="color:#00bcd4; margin-right:4px;"></i>
-            dibuat untuk membantu sesama • <strong>JIMMY</strong>
-        </div>
-    </div>
+MASUK
 
-    <script>
-        // ============================================================
-        // REAL TIME CLOCK
-        // ============================================================
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            const timeStr = h + ':' + m + ':' + s;
-            const timeShort = h + ':' + m;
+</button>
 
-            const lockTime = document.getElementById('lockTime');
-            const headerTime = document.getElementById('headerTime');
-            if (lockTime) lockTime.textContent = timeStr;
-            if (headerTime) headerTime.textContent = timeShort;
+</div>
 
-            const dateObj = new Date();
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober',
-                'November', 'Desember'
-            ];
-            const dateStr = days[dateObj.getDay()] + ', ' + dateObj.getDate() + ' ' + months[dateObj.getMonth()] + ' ' +
-                dateObj.getFullYear();
-            const lockDate = document.getElementById('lockDate');
-            if (lockDate) lockDate.textContent = dateStr;
-        }
+<div class="page" id="home">
 
-        updateClock();
-        setInterval(updateClock, 1000);
+<div class="header">
 
-        // ============================================================
-        // LOCKSCREEN
-        // ============================================================
-        const lockscreen = document.getElementById('lockscreen');
-        const app = document.getElementById('app');
-        const unlockBtn = document.getElementById('unlockBtn');
+<h2 id="greeting">
 
-        unlockBtn.addEventListener('click', function() {
-            lockscreen.classList.add('hide');
-            app.classList.add('show');
-            // force clock update after unlock
-            updateClock();
-        });
+Selamat Datang
 
-        // ============================================================
-        // NAVIGASI SUBPAGE APK PREMIUM
-        // ============================================================
-        const mainGrid = document.getElementById('mainGrid');
-        const subpage = document.getElementById('subpage');
-        const apkPremiumBtn = document.getElementById('apkPremiumBtn');
-        const backToMain = document.getElementById('backToMain');
+</h2>
 
-        apkPremiumBtn.addEventListener('click', function() {
-            mainGrid.style.display = 'none';
-            subpage.classList.add('show');
-            // sembunyikan quran kalau kebuka
-            document.getElementById('quranContainer').style.display = 'none';
-        });
+<p>
 
-        backToMain.addEventListener('click', function() {
-            mainGrid.style.display = 'grid';
-            subpage.classList.remove('show');
-        });
+MOSHI dibuat untuk membantu sesama orang.
 
-        // ============================================================
-        // APK MOVIE & HD FOTO → direct link
-        // ============================================================
-        document.getElementById('apkMovie').addEventListener('click', function() {
-            window.open('https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file', '_blank');
-        });
+</p>
 
-        document.getElementById('apkHdFoto').addEventListener('click', function() {
-            window.open('https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936', '_blank');
-        });
+<div id="clock2">
 
-        // ============================================================
-        // REMOVE BG → simulasi (bisa dipakai ke software manapun)
-        // ============================================================
-        document.getElementById('removeBgBtn').addEventListener('click', function() {
-            alert(
-                '🖼️ REMOVE BG\n\nFungsi ini siap digunakan.\nCukup upload gambar, AI akan hapus background.\nBisa diintegrasikan ke Photoshop, Canva, Figma, dll.\n\n(versi demo — siap pakai)'
-                );
-        });
+00:00:00
 
-        // ============================================================
-        // TIKTOK DOWNLOADER → MP3/MP4 + hapus watermark
-        // ============================================================
-        document.getElementById('tiktokBtn').addEventListener('click', function() {
-            const url = prompt(
-                '📱 MASUKKAN LINK TIKTOK\n\nContoh: https://www.tiktok.com/@user/video/123456789\n\nKami akan download & hapus watermark, bisa MP3/MP4.'
-                );
-            if (url && url.includes('tiktok.com')) {
-                alert('✅ PROSES DOWNLOAD DIMULAI!\n\n📥 File akan siap dalam beberapa detik.\n🎵 MP3 / 🎬 MP4 tersedia.\n\n(link: ' +
-                    url + ')');
-            } else if (url) {
-                alert('❌ Link tidak valid. Pastikan link TikTok yang benar.');
-            }
-        });
+</div>
 
-        // ============================================================
-        // AL-QUR'AN ONLINE (tanpa suara) → tampilkan embed
-        // ============================================================
-        const quranBtn = document.getElementById('quranBtn');
-        const quranContainer = document.getElementById('quranContainer');
+<div id="date2">
 
-        quranBtn.addEventListener('click', function() {
-            // toggle tampilan quran
-            if (quranContainer.style.display === 'none') {
-                quranContainer.style.display = 'block';
-                mainGrid.style.display = 'none'; // sembunyikan grid biar fokus
-           // toggle tampilan quran
-            if (quranContainer.style.display === 'none') {
-                quranContainer.style.display = 'block';
-                mainGrid.style.display = 'none'; // sembunyikan grid biar fokus
-                subpage.classList.remove('show');
-                // scroll ke quran
-                quranContainer.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                quranContainer.style.display = 'none';
-                mainGrid.style.display = 'grid';
-            }
-        });
+Loading...
 
-        // ============================================================
-        // HUBUNGI OWNER → WhatsApp
-        // ============================================================
-        document.getElementById('waOwnerBtn').addEventListener('click', function() {
-            window.open('https://wa.me/6287852990112?text=Halo%20JIMMY%2C%20saya%20mau%20tanya%20update%20MOSHI', '_blank');
-        });
+</div>
 
-        // ============================================================
-        // TOMBOL "MASUK" DI LOCKSCREEN JUGA BISA ENTER
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !lockscreen.classList.contains('hide')) {
-                unlockBtn.click();
-            }
-        });
+</div>
 
-        // ============================================================
-        // RESET quran jika back to main dari subpage
-        // ============================================================
-        // (sudah dihandle di backToMain)
+<div class="profile">
 
-        console.log('🚀 MOSHI by JIMMY — siap pakai!');
-    </script>
+<div class="avatar">
 
+J
+
+</div>
+
+<div>
+
+<b>JIMMY</b>
+
+<br>
+
+Owner MOSHI
+
+<br>
+
+<span style="color:#00cbe8;">
+🟢 Online
+</span>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card"
+
+onclick="window.open('https://www.slazzer.com')">
+
+<span>🖼️</span>
+
+REMOVE BG
+
+</div>
+
+<div class="card"
+
+onclick="window.open('https://ssstik.io')">
+
+<span>🎵</span>
+
+TIKTOK DOWNLOADER
+
+</div>
+<div class="card"
+onclick="premiumPage()">
+
+<span>📦</span>
+
+APK PREMIUM
+
+</div>
+
+<div class="card"
+onclick="window.open('https://quran.com')">
+
+<span>📖</span>
+
+AL-QUR'AN ONLINE
+
+</div>
+
+<div class="card"
+onclick="window.open('https://wa.me/6287852990112')">
+
+<span>💬</span>
+
+HUBUNGI OWNER
+
+</div>
+
+<div class="card">
+
+<span>❤️</span>
+
+MOSHI APP
+
+<br><br>
+
+Membantu sesama orang.
+
+</div>
+
+</div>
+
+</div>
+
+<div class="page" id="premium">
+
+<div class="header">
+
+<h2>
+
+APK PREMIUM
+
+</h2>
+
+<p>
+
+Pilih aplikasi yang ingin didownload
+
+</p>
+
+</div>
+
+<div class="grid">
+
+<div class="card"
+
+onclick="window.open('https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file')">
+
+<span>🎬</span>
+
+APK MOVIE
+
+</div>
+
+<div class="card"
+
+onclick="window.open('https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936')">
+
+<span>🖼️</span>
+
+APK HD FOTO
+
+</div>
+
+</div>
+
+<br>
+
+<button class="enter"
+
+style="width:170px;height:50px;"
+
+onclick="backHome()">
+
+KEMBALI
+
+</button>
+
+</div>
+
+<script>
+
+function masuk(){
+
+document
+    document.querySelectorAll(".card").forEach(card=>{
+
+card.addEventListener("click",function(){
+
+this.style.transform="scale(.95)";
+
+setTimeout(()=>{
+
+this.style.transform="scale(1)";
+
+},150);
+
+});
+
+});
+
+window.addEventListener("load",()=>{
+
+document.body.style.opacity="0";
+
+setTimeout(()=>{
+
+document.body.style.transition=".5s";
+
+document.body.style.opacity="1";
+
+},100);
+
+});
+
+function notif(text){
+
+let n=document.createElement("div");
+
+n.innerHTML=text;
+
+n.style.position="fixed";
+
+n.style.bottom="25px";
+
+n.style.left="50%";
+
+n.style.transform="translateX(-50%)";
+
+n.style.background="#00d8ff";
+
+n.style.color="white";
+
+n.style.padding="12px 25px";
+
+n.style.borderRadius="15px";
+
+n.style.boxShadow="0 0 20px cyan";
+
+n.style.zIndex="9999";
+
+document.body.appendChild(n);
+
+setTimeout(()=>{
+
+n.remove();
+
+},2000);
+
+}
+
+document.querySelectorAll(".card").forEach(card=>{
+
+card.addEventListener("click",()=>{
+
+notif("Membuka fitur...");
+
+});
+
+});
+
+let footer=document.createElement("div");
+
+footer.innerHTML="MOSHI © 2026<br>Owner : JIMMY";
+
+footer.style.marginTop="35px";
+
+footer.style.textAlign="center";
+
+footer.style.color="#777";
+
+footer.style.paddingBottom="25px";
+
+document.getElementById("home").appendChild(footer);
+
+</script>
+<div class="bottom-nav">
+
+<div class="nav-btn" onclick="document.getElementById('home').scrollTo(0,0)">
+🏠
+<div>Home</div>
+</div>
+
+<div class="nav-btn" onclick="premiumPage()">
+📦
+<div>Premium</div>
+</div>
+
+<div class="nav-btn" onclick="window.open('https://quran.com')">
+📖
+<div>Quran</div>
+</div>
+
+<div class="nav-btn" onclick="window.open('https://wa.me/6287852990112')">
+💬
+<div>Owner</div>
+</div>
+
+</div>
+
+<div class="version">
+MOSHI v1.0 • Owner JIMMY
+</div>
 </body>
+
 </html>
+.bottom-nav{
+position:fixed;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+height:70px;
+background:white;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(0,0,0,.12);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
+}
+
+.nav-btn{
+display:flex;
+flex-direction:column;
+align-items:center;
+font-size:13px;
+cursor:pointer;
+color:#555;
+transition:.3s;
+}
+
+.nav-btn:hover{
+color:#00cfe8;
+transform:translateY(-4px);
+}
+
+.version{
+margin-top:15px;
+font-size:12px;
+text-align:center;
+color:#888;
+}
+
+.card{
+position:relative;
+overflow:hidden;
+}
+
+.card::before{
+content:"";
+position:absolute;
+width:140%;
+height:45px;
+background:rgba(255,255,255,.35);
+transform:rotate(-25deg);
+left:-150%;
+top:0;
+transition:.6s;
+}
+
+.card:hover::before{
+left:130%;
+}
