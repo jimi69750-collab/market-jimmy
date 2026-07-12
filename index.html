@@ -3,6 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOSHI DASHBOARD</title>
+    <style>
+        :root {
+            --bg-dark: #0a0e14;
+            --card-dark: #161c24;
+            --cyan-main: #00d2ff;
+            --text-white: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { width: 100%; max-width: 500px; }
+
+        /* Header Style */
+        .header-title { text-align: center; font-size: 2rem; font-weight: bold; margin-bottom: 10px; color: var(--cyan-main); }
+        
+        /* Dashboard Card */
+        .dash-card { background: var(--card-dark); padding: 20px; border-radius: 20px; border: 1px solid #333; margin-bottom: 20px; }
+        .user-info { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .avatar { width: 60px; height: 60px; background: var(--cyan-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: black; }
+        
+        /* Grid Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+        .stat-box { background: #1f2937; padding: 15px; border-radius: 15px; font-size: 0.8rem; }
+        .stat-icon { color: var(--cyan-main); font-size: 1.2rem; margin-bottom: 5px; }
+
+        /* Feature Grid */
+        .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .feature-btn { 
+            background: var(--card-dark); 
+            padding: 20px; 
+            border-radius: 15px; 
+            text-align: center; 
+            border: 1px solid #333; 
+            cursor: pointer; 
+            transition: 0.3s;
+            color: var(--cyan-main);
+            font-weight: bold;
+        }
+        .feature-btn:hover { border-color: var(--cyan-main); transform: scale(1.05); }
+
+        /* Clock */
+        #jam-realtime { text-align: center; font-size: 1.5rem; margin-bottom: 20px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="header-title">MOSHI</h1>
+    <div id="jam-realtime">00:00:00</div>
+
+    <div class="dash-card">
+        <div class="user-info">
+            <div class="avatar">JIM</div>
+            <div>
+                <div>Ahlan Wa Sahlan!!</div>
+                <div style="font-size: 1.2rem; font-weight: bold;">JIMMY</div>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box"><div class="stat-icon">👥</div>User</div>
+            <div class="stat-box"><div class="stat-icon">🔗</div>Link</div>
+            <div class="stat-box"><div class="stat-icon">📅</div>Exp</div>
+        </div>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-btn" onclick="window.open('https://slazzer.com/')">REMOVE BG<br><small style="color:white">Slazzer.com</small></div>
+        <div class="feature-btn" onclick="window.open('https://tiktokio.com/')">TIKTOK DL</div>
+        <div class="feature-btn" onclick="alert('Menu APK Premium')">APK PREMIUM</div>
+        <div class="feature-btn" onclick="window.open('https://litequran.net/')">AL-QUR'AN</div>
+        <div class="feature-btn" style="grid-column: span 2;" onclick="window.open('https://wa.me/6287852990112')">HUBUNGI OWNER</div>
+    </div>
+</div>
+
+<script>
+    // Jam Realtime
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('jam-realtime').innerText = now.toLocaleTimeString('id-ID');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOSHI - By JIMMY</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
