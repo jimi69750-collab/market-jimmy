@@ -3,510 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNIVERSAL - by Jimmy</title>
+    <title>Moshi App - Exclusive Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* TEMA CERAH & FONT */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
         :root {
-            --bg-color: #f0f8ff;
-            --primary-color: #007BFF;
-            --text-color: #333333;
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --bg-main: #f4f7f6;
+            --bg-card: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --cyan: #00bcd4;
+            --cyan-hover: #0097a7;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-cyan: 0 4px 15px rgba(0, 188, 212, 0.3);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        /* ANIMASI */
+        /* Mobile Container Simulation */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--bg-main);
+            position: relative;
+            overflow-x: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
         }
 
-        /* HALAMAN WELCOME */
-        #welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        /* --- LOGIN PAGE --- */
+        #login-page {
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        .welcome-title {
-            font-size: 4rem;
-            color: #fff;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
-
-        .enter-btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            color: #fff;
-            background-color: #ff7eb3;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 126, 179, 0.4);
-            animation: pulse 2s infinite;
-            transition: background 0.3s ease;
-        }
-
-        .enter-btn:hover {
-            background-color: #ff529a;
-        }
-
-        /* HALAMAN UTAMA */
-        #main-content {
-            display: none;
+            height: 100vh;
             padding: 20px;
-            animation: fadeIn 1s ease forwards;
+            background: linear-gradient(135deg, #ffffff, #e0f7fa);
         }
 
-        /* HEADER */
-        header {
-            background: #ffffff;
-            padding: 20px 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .web-title h1 {
-            color: var(--primary-color);
+        .logo-container h1 {
             font-size: 2.5rem;
+            color: var(--text-main);
             letter-spacing: 2px;
         }
 
-        .web-title p {
-            color: #666;
-            font-weight: bold;
+        .logo-container h1 span {
+            color: var(--cyan);
         }
 
-        .contact-info {
-            text-align: right;
-            background: #e6f2ff;
-            padding: 10px 20px;
-            border-radius: 10px;
-            border-left: 5px solid var(--primary-color);
-        }
-
-        .contact-info strong {
-            color: var(--primary-color);
-        }
-
-        #clock {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ff529a;
-            background: #fff0f5;
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* GRID AGAMA */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-        }
-
-        .card {
-            height: 250px;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
-
-        .card-bg {
+        .login-card {
+            background: var(--bg-card);
             width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover .card-bg {
-            transform: scale(1.1);
-        }
-
-        .card-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            transition: background 0.3s ease;
-        }
-
-        .card:hover .card-overlay {
-            background: rgba(0,0,0,0.2);
-        }
-
-        .card-icon {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-        }
-
-        .card-title {
-            font-size: 2rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-        }
-
-        /* MODAL POPUP INFO AGAMA */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: #fff;
-            width: 90%;
-            max-width: 600px;
-            border-radius: 20px;
             padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--cyan);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
             position: relative;
-            animation: fadeIn 0.4s ease;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
-        .close-btn {
+        .input-group i {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 2rem;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            background: #fdfdfd;
+        }
+
+        .input-group input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 5px rgba(0, 188, 212, 0.2);
+        }
+
+        .btn-cyan {
+            width: 100%;
+            padding: 15px;
+            background: var(--cyan);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
-            color: #ff529a;
-            transition: color 0.3s ease;
+            box-shadow: var(--shadow-cyan);
         }
 
-        .close-btn:hover {
-            color: #d10053;
+        .btn-cyan:hover {
+            background: var(--cyan-hover);
         }
 
-        .modal-header h2 {
+        /* --- DASHBOARD PAGE --- */
+        #dashboard-page {
+            display: none;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
-            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+        }
+        .header h2 span { color: var(--cyan); }
+
+        .info-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--cyan);
+        }
+
+        .clock {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .device-info {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .menu-item {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            border-color: var(--cyan);
+            transform: translateY(-5px);
+        }
+
+        .menu-item i {
+            font-size: 2rem;
+            color: var(--cyan);
+            margin-bottom: 10px;
+        }
+
+        /* Sections (Tools, Quran, Downloader) */
+        .content-section {
+            display: none;
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
             margin-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 10px;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--cyan);
+            display: inline-block;
+            padding-bottom: 5px;
         }
 
-        .modal-body h3 {
-            margin-top: 15px;
-            color: #444;
+        /* Quran Styles */
+        .quran-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .quran-item:last-child { border-bottom: none; }
+        
+        .arab-text {
+            font-size: 1.5rem;
+            text-align: right;
+            margin-bottom: 5px;
+            color: var(--text-main);
+            direction: rtl;
+        }
+        
+        .latin-text {
+            font-size: 0.9rem;
+            color: var(--cyan);
+            font-style: italic;
         }
 
-        .modal-body ul {
-            margin-left: 20px;
-            margin-top: 10px;
-            line-height: 1.6;
-            color: #555;
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 450px;
+            background: var(--bg-card);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
         }
 
-        .modal-body p {
-            line-height: 1.6;
-            color: #555;
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            cursor: pointer;
         }
+
+        .nav-item.active {
+            color: var(--cyan);
+        }
+        
+        .nav-item i { font-size: 1.2rem; margin-bottom: 3px; }
+        .nav-item span { display: block; font-size: 0.75rem; }
 
     </style>
 </head>
 <body>
 
-    <!-- HALAMAN WELCOME -->
-    <div id="welcome-screen">
-        <h1 class="welcome-title">UNIVERSAL</h1>
-        <button class="enter-btn" onclick="masukWeb()">🚀 Klik Untuk Masuk</button>
-    </div>
+<div class="app-container">
 
-    <!-- HALAMAN UTAMA -->
-    <div id="main-content">
-        <header>
-            <div class="web-title">
-                <h1>UNIVERSAL</h1>
-                <p>Founder : Jimmy</p>
+    <!-- LOGIN PAGE -->
+    <section id="login-page" class="fade-in">
+        <div class="logo-container">
+            <h1>MOSH<span>I</span></h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 5px;">Exclusive Access Only</p>
+        </div>
+
+        <div class="login-card">
+            <h3 style="margin-bottom: 20px; font-size: 1.1rem;">Welcome Back</h3>
+            <p style="font-size: 0.8rem; color: #e74c3c; margin-bottom: 15px; display: none;" id="error-msg">Akses Ditolak! Hanya owner yang bisa masuk.</p>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Username (Root)" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Password">
             </div>
             
-            <div id="clock">00:00:00</div>
+            <button class="btn-cyan" onclick="attemptLogin()">SIGN IN <i class="fas fa-arrow-right" style="margin-left: 5px;"></i></button>
+        </div>
+    </section>
 
-            <div class="contact-info">
-                <p><strong>📞 Contact Jimmy</strong></p>
-                <p>+62 878-5299-0112</p>
-            </div>
-        </header>
-
-        <main class="grid-container">
-            <!-- ISLAM -->
-            <div class="card" onclick="bukaModal('modal-islam')">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Kaaba_mirror_edit_jj.jpg/800px-Kaaba_mirror_edit_jj.jpg');"></div>
-                <div class="card-overlay">
-                    <div class="card-icon">☪️</div>
-                    <div class="card-title">Islam</div>
-                </div>
-            </div>
-
-            <!-- KRISTEN PROTESTAN -->
-            <div class="card" onclick="bukaModal('modal-kristen')">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Gereja_Blenduk_Semarang.jpg/800px-Gereja_Blenduk_Semarang.jpg');"></div>
-                <div class="card-overlay">
-                    <div class="card-icon">✝️</div>
-                    <div class="card-title">Protestan</div>
-                </div>
-            </div>
-
-            <!-- KATOLIK -->
-            <div class="card" onclick="bukaModal('modal-katolik')">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Jakarta_Cathedral_3.jpg/800px-Jakarta_Cathedral_3.jpg');"></div>
-                <div class="card-overlay">
-                    <div class="card-icon">⛪</div>
-                    <div class="card-title">Katolik</div>
-                </div>
-            </div>
-
-            <!-- HINDU -->
-            <div class="card" onclick="bukaModal('modal-hindu')">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Pura_Ulun_Danu_Bratan_-_Bali.jpg/800px-Pura_Ulun_Danu_Bratan_-_Bali.jpg');"></div>
-                <div class="card-overlay">
-                    <div class="card-icon">🕉️</div>
-                    <div class="card-title">Hindu</div>
-                </div>
-            </div>
-
-            <!-- BUDDHA -->
-            <div class="card" onclick="bukaModal('modal-buddha')">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Borobudur_Temple_from_air.jpg/800px-Borobudur_Temple_from_air.jpg');"></div>
-                <div class="card-overlay">
-                    <div class="card-icon">☸️</div>
-                    <div class="card-title">Buddha</div>
-                </div>
-            </div>
-
-            <!-- KONGHUCU -->
-            <div class="card" onclick="bukaModal('modal-konghucu')">
-                <div class="card-bg" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sam_Poo_Kong_Temple_Semarang.jpg/800px-Sam_Poo_Kong_Temple_Semarang.jpg');"></div>
-                <div class="card-overlay">
-                    <div class="card-icon">☯️</div>
-                    <div class="card-title">Konghucu</div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- KUMPULAN MODAL (INFO AGAMA) -->
-    
-    <!-- Modal Islam -->
-    <div id="modal-islam" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="tutupModal('modal-islam')">&times;</span>
-            <div class="modal-header">
-                <h2>☪️ Agama Islam</h2>
-            </div>
-            <div class="modal-body">
-                <p>Islam adalah agama monoteisme samawi yang diajarkan oleh Nabi Muhammad SAW. Tempat ibadah umat Islam adalah Masjid, dan kitab sucinya adalah Al-Qur'an.</p>
-                <h3>📅 Hari Besar:</h3>
-                <ul>
-                    <li><strong>Idul Fitri:</strong> 1 Syawal (Penutup bulan puasa Ramadhan)</li>
-                    <li><strong>Idul Adha:</strong> 10 Dzulhijjah (Hari Raya Kurban)</li>
-                    <li><strong>Tahun Baru Hijriyah:</strong> 1 Muharram</li>
-                    <li><strong>Maulid Nabi Muhammad SAW:</strong> 12 Rabiul Awal</li>
-                    <li><strong>Isra Mi'raj:</strong> 27 Rajab</li>
-                </ul>
+    <!-- DASHBOARD PAGE -->
+    <section id="dashboard-page">
+        <div class="header fade-in">
+            <h2>MOSH<span>I</span></h2>
+            <div class="profile-pic" style="width: 40px; height: 40px; background: var(--cyan); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                J
             </div>
         </div>
-    </div>
 
-    <!-- Modal Kristen Protestan -->
-    <div id="modal-kristen" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="tutupModal('modal-kristen')">&times;</span>
-            <div class="modal-header">
-                <h2>✝️ Agama Kristen Protestan</h2>
+        <!-- Info Card (Clock & Device) -->
+        <div class="info-card fade-in" style="animation-delay: 0.1s;">
+            <div>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Current Time</p>
+                <div class="clock" id="realtime-clock">00:00:00</div>
             </div>
-            <div class="modal-body">
-                <p>Kristen Protestan adalah denominasi besar dalam kekristenan yang muncul setelah Reformasi Protestan. Kitab sucinya adalah Alkitab dan tempat ibadahnya adalah Gereja.</p>
-                <h3>📅 Hari Besar:</h3>
-                <ul>
-                    <li><strong>Natal:</strong> 25 Desember (Kelahiran Yesus Kristus)</li>
-                    <li><strong>Paskah:</strong> Minggu setelah bulan purnama pertama musim semi (Kebangkitan Yesus)</li>
-                    <li><strong>Jumat Agung:</strong> Jumat sebelum Paskah (Wafat Yesus Kristus)</li>
-                    <li><strong>Kenaikan Isa Almasih:</strong> 40 hari setelah Paskah</li>
-                </ul>
+            <div style="text-align: right;">
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Device Detected</p>
+                <div class="device-info" id="device-name"><i class="fas fa-mobile-alt"></i> Scanning...</div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Katolik -->
-    <div id="modal-katolik" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="tutupModal('modal-katolik')">&times;</span>
-            <div class="modal-header">
-                <h2>⛪ Agama Katolik</h2>
-            </div>
-            <div class="modal-body">
-                <p>Gereja Katolik adalah gereja Kristen terbesar di dunia, dipimpin oleh Paus di Vatikan. Tempat ibadahnya adalah Gereja/Katedral dan kitab sucinya adalah Alkitab.</p>
-                <h3>📅 Hari Besar:</h3>
-                <ul>
-                    <li><strong>Natal:</strong> 25 Desember (Kelahiran Yesus Kristus)</li>
-                    <li><strong>Paskah:</strong> Kebangkitan Yesus Kristus</li>
-                    <li><strong>Jumat Agung:</strong> Peringatan penyaliban Yesus</li>
-                    <li><strong>Kenaikan Isa Almasih:</strong> 40 hari setelah Paskah</li>
-                </ul>
+        <!-- Default Home View -->
+        <div id="view-home" class="content-section active">
+            <h3 class="section-title">Dashboard Tools</h3>
+            <div class="menu-grid">
+                <div class="menu-item" onclick="switchView('view-downloader')">
+                    <i class="fab fa-tiktok"></i>
+                    <p style="font-size: 0.85rem; font-weight: 600;">Downloader</p>
+                </div>
+                <div class="menu-item" onclick="switchView('view-quran')">
+                    <i class="fas fa-book-open"></i>
+                    <p style="font-size: 0.85rem; font-weight: 600;">Al-Qur'an</p>
+                </div>
+                <div class="menu-item" onclick="alert('Fitur keamanan aktif. Sistem aman.')">
+                    <i class="fas fa-shield-alt"></i>
+                    <p style="font-size: 0.85rem; font-weight: 600;">Security</p>
+                </div>
+                <div class="menu-item" onclick="alert('Fitur IP Tracker sedang maintenance.')">
+                    <i class="fas fa-satellite-dish"></i>
+                    <p style="font-size: 0.85rem; font-weight: 600;">IP Tools</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Hindu -->
-    <div id="modal-hindu" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="tutupModal('modal-hindu')">&times;</span>
-            <div class="modal-header">
-                <h2>🕉️ Agama Hindu</h2>
-            </div>
-            <div class="modal-body">
-                <p>Hindu adalah agama dan jalan hidup yang berasal dari anak benua India. Di Indonesia, banyak dianut di Bali. Tempat ibadahnya adalah Pura dan kitab sucinya adalah Weda.</p>
-                <h3>📅 Hari Besar:</h3>
-                <ul>
-                    <li><strong>Nyepi:</strong> Tahun Baru Saka (Hari keheningan)</li>
-                    <li><strong>Galungan:</strong> Kemenangan Dharma (kebenaran) melawan Adharma (kejahatan)</li>
-                    <li><strong>Kuningan:</strong> Perayaan turunnya para dewa dan leluhur</li>
-                    <li><strong>Saraswati:</strong> Hari turunnya ilmu pengetahuan</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Buddha -->
-    <div id="modal-buddha" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="tutupModal('modal-buddha')">&times;</span>
-            <div class="modal-header">
-                <h2>☸️ Agama Buddha</h2>
-            </div>
-            <div class="modal-body">
-                <p>Buddha didasarkan pada ajaran Siddhartha Gautama. Tempat ibadahnya adalah Vihara (atau Candi) dan kitab sucinya adalah Tripitaka.</p>
-                <h3>📅 Hari Besar:</h3>
-                <ul>
-                    <li><strong>Waisak:</strong> Memperingati tiga peristiwa suci (Kelahiran, Pencerahan, dan Parinirwana Buddha Gautama)</li>
-                    <li><strong>Asadha:</strong> Memperingati khotbah pertama Buddha</li>
-                    <li><strong>Kathina:</strong> Bulan berderma kepada para bhikkhu</li>
-                    <li><strong>Magha Puja:</strong> Berkumpulnya 1.250 Arahat</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Konghucu -->
-    <div id="modal-konghucu" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="tutupModal('modal-konghucu')">&times;</span>
-            <div class="modal-header">
-                <h2>☯️ Agama Konghucu</h2>
-            </div>
-            <div class="modal-body">
-                <p>Konghucu didasarkan pada ajaran Konfusius, menekankan pada moralitas pribadi dan pemerintahan, kebenaran, dan keadilan. Tempat ibadahnya adalah Kelenteng dan kitab sucinya Sishu Wujing.</p>
-                <h3>📅 Hari Besar:</h3>
-                <ul>
-                    <li><strong>Tahun Baru Imlek:</strong> 1 Cia Gwee (Tahun baru kalender lunar)</li>
-                    <li><strong>Cap Go Meh:</strong> 15 Cia Gwee (Penutup perayaan Imlek)</li>
-                    <li><strong>Hari Lahir Khonghucu:</strong> 27 Ji Gwee</li>
-                    <li><strong>Qing Ming:</strong> Ceng Beng (Hari Ziarah Leluhur)</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT -->
-    <script>
-        // 1. Fungsi untuk tombol masuk (Welcome Screen ke Main Content)
-        function masukWeb() {
-            const welcomeScreen = document.getElementById('welcome-screen');
-            const mainContent = document.getElementById('main-content');
+        <!-- Downloader View -->
+        <div id="view-downloader" class="content-section">
+            <h3 class="section-title">Sosmed Downloader</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Download Video TikTok & Instagram tanpa watermark.</p>
             
-            welcomeScreen.style.opacity = '0';
-            setTimeout(() => {
-                welcomeScreen.style.display = 'none';
-                mainContent.style.display = 'block';
-            }, 800); // Sinkron dengan durasi CSS transition
-        }
-
-        // 2. Fungsi Jam Real-Time berdasarkan HP/PC user
-        function updateJam() {
-            const sekarang = new Date();
-            let jam = sekarang.getHours().toString().padStart(2, '0');
-            let menit = sekarang.getMinutes().toString().padStart(2, '0');
-            let detik = sekarang.getSeconds().toString().padStart(2, '0');
+            <div class="input-group">
+                <i class="fas fa-link"></i>
+                <input type="text" id="url-input" placeholder="Tempel URL Video disini...">
+            </div>
             
-            document.getElementById('clock').innerText = `${jam} : ${menit} : ${detik}`;
-        }
-        // Update jam setiap detik
-        setInterval(updateJam, 1000);
-        updateJam(); // Panggil sekali di awal agar tidak delay 1 detik
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-cyan" onclick="startDownload('Tiktok')" style="background: #000; flex: 1;"><i class="fab fa-tiktok"></i> TikTok</button>
+                <button class="btn-cyan" onclick="startDownload('Instagram')" style="background: #e1306c; flex: 1;"><i class="fab fa-instagram"></i> IG</button>
+            </div>
+            <p id="download-status" style="font-size: 0.8rem; color: var(--cyan); margin-top: 15px; display: none;">Menghubungkan ke server api...</p>
+        </div>
 
-        // 3. Fungsi Buka/Tutup Modal (Informasi Agama)
-        function bukaModal(idModal) {
-            document.getElementById(idModal).style.display = 'flex';
-        }
+        <!-- Al-Quran View -->
+        <div id="view-quran" class="content-section">
+            <h3 class="section-title">Al-Qur'an Digital</h3>
+            <div id="quran-container">
+                <!-- Data Qur'an di-render oleh JS -->
+            </div>
+        </div>
 
-        function tutupModal(idModal) {
-            document.getElementById(idModal).style.display = 'none';
-        }
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchView('view-home', this)">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-downloader', this)">
+                <i class="fas fa-download"></i>
+                <span>Download</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-quran', this)">
+                <i class="fas fa-book"></i>
+                <span>Qur'an</span>
+            </div>
+            <div class="nav-item" onclick="location.reload()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Exit</span>
+            </div>
+        </div>
+    </section>
 
-        // Tutup modal jika user klik di luar kotak konten modal
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
+</div>
+
+<script>
+    // --- 1. SYSTEM SECURITY & LOGIN ---
+    function attemptLogin() {
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-msg');
+
+        // GANTI INI UNTUK MENGATUR AKUN (Hanya kamu yang tahu)
+        if(user.toLowerCase() === 'jimmy' && pass === 'moshi123') {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('dashboard-page').style.display = 'block';
+            initDashboard();
+        } else {
+            errorMsg.style.display = 'block';
+            document.getElementById('password').value = '';
         }
-    </script>
+    }
+
+    // --- 2. REAL-TIME CLOCK ---
+    function initDashboard() {
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('realtime-clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+        }, 1000);
+        detectDevice();
+        renderQuran();
+    }
+
+    // --- 3. DEVICE DETECTION (Baca OS / HP) ---
+    function detectDevice() {
+        const ua = navigator.userAgent;
+        let device = "Unknown Device";
+        
+        if (/android/i.test(ua)) {
+            // Mencoba mendapatkan model dari User-Agent (meskipun modern browser menyembunyikannya)
+            let match = ua.match(/Android.*?; (.*?) Build/i);
+            device = match ? match[1] : "Android Smartphone";
+        } else if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
+            device = "Apple iPhone/iPad";
+        } else if (/Windows/.test(ua)) {
+            device = "Windows Desktop/Laptop";
+        } else if (/Mac OS/.test(ua)) {
+            device = "Mac OS Device";
+        }
+        
+        document.getElementById('device-name').innerHTML = `<i class="fas fa-mobile-alt"></i> ${device}`;
+    }
+
+    // --- 4. NAVIGATION SYSTEM ---
+    function switchView(viewId, navElement = null) {
+        // Sembunyikan semua section
+        document.querySelectorAll('.content-section').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        // Tampilkan yang dipilih
+        document.getElementById(viewId).classList.add('active');
+
+        // Update indikator navbar bawah
+        if(navElement) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            navElement.classList.add('active');
+        }
+    }
+
+    // --- 5. FAKE DOWNLOADER LOGIC (Butuh API Backend) ---
+    function startDownload(platform) {
+        const url = document.getElementById('url-input').value;
+        if(!url) {
+            alert('Masukkan link video dulu ya!');
+            return;
+        }
+        
+        const status = document.getElementById('download-status');
+        status.style.display = 'block';
+        status.innerText = `Memproses link ${platform}... (Butuh Backend API)`;
+        
+        // Simulasi loading
+        setTimeout(() => {
+            status.innerText = "Error: Fitur ini membutuhkan REST API/Backend Node.js untuk mengekstrak video. Tampilan Front-End sudah siap.";
+            status.style.color = "#e74c3c";
+        }, 2000);
+    }
+
+    // --- 6. AL-QURAN DIGITAL (Arab + Latin) ---
+    const quranData = [
+        {
+            surah: "Al-Fatihah",
+            ayat: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+            latin: "Bismillahir-rahmanir-rahim"
+        },
+        {
+            surah: "Al-Ikhlas",
+            ayat: "قُلْ هُوَ اللَّهُ أَحَدٌ",
+            latin: "Qul huwal laahu ahad"
+        },
+        {
+            surah: "Al-Falaq",
+            ayat: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ",
+            latin: "Qul a'uudzu birabbil falaq"
+        },
+        {
+            surah: "An-Nas",
+            ayat: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+            latin: "Qul a'uudzu birabbin naas"
+        }
+    ];
+
+    function renderQuran() {
+        const container = document.getElementById('quran-container');
+        let html = '';
+        quranData.forEach(q => {
+            html += `
+                <div class="quran-item">
+                    <p style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px;">Surah ${q.surah}</p>
+                    <div class="arab-text">${q.ayat}</div>
+                    <div class="latin-text">${q.latin}</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // Eksekusi trigger enter pada password
+    document.getElementById("password").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            attemptLogin();
+        }
+    });
+</script>
+
 </body>
 </html>
