@@ -3,346 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MOSHI - X [ Beta ]</title>
+    <title>MOSHI - by JIMMY</title>
     <style>
-        /* --- RESET & ANIMATIONS --- */
+        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #0a0d14; color: #fff; overflow-x: hidden; }
+        body { background: #0f151d; color: #fff; overflow-x: hidden; }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes pulseGlow { 0% { text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); } 50% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.9); } 100% { text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); } }
+        /* ANIMATION */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.6s ease forwards; }
+        .fade-in-delay { opacity: 0; animation: fadeIn 0.6s ease forwards; }
+        .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; }
 
-        .anim-fade { animation: fadeIn 0.8s ease forwards; opacity: 0; }
-        .anim-slide { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .delay-1 { animation-delay: 0.3s; } .delay-2 { animation-delay: 0.6s; }
+        /* ---------------- PRE-LOGIN PAGE (Screenshot 1 & 3) ---------------- */
+        #pre-login-screen {
+            display: flex; flex-direction: column; min-height: 100vh; padding: 40px 20px 20px;
+            background: #0f151d; position: relative; z-index: 2;
+        }
+        .pre-logo-area { text-align: center; margin-top: 20px; }
+        .pre-logo { font-size: 48px; font-weight: 900; color: #fff; letter-spacing: 2px; }
+        .pre-logo span { color: #00ffff; }
+        .pre-tagline { color: #555; font-size: 11px; letter-spacing: 3px; margin-top: 5px; }
 
-        /* --- INTRO & LOGIN LAYER --- */
+        .pre-info-box {
+            margin-top: 40px; background: #1a2330; border: 1px solid #2a3441; border-radius: 20px;
+            padding: 30px; text-align: center; position: relative;
+        }
+        .pre-info-box .shield { width: 50px; height: 50px; margin: 0 auto 15px; background: #0f151d; border: 2px solid #00ffff; border-radius: 16px; display: flex; justify-content: center; align-items: center; color: #00ffff; font-size: 24px; box-shadow: 0 0 20px rgba(0,255,255,0.1); }
+        .pre-info-box h3 { margin-bottom: 10px; color: #ddd; letter-spacing: 1px; }
+        .pre-info-box p { font-size: 13px; color: #888; line-height: 1.6; }
+
+        .pre-actions { margin-top: 30px; }
+        .btn-pre-primary {
+            display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+            padding: 16px; background: transparent; border: 1px solid #00ffff; border-radius: 12px;
+            color: #00ffff; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.3s; margin-bottom: 15px;
+        }
+        .btn-pre-primary:active { background: rgba(0,255,255,0.1); transform: scale(0.98); }
+        .btn-pre-secondary {
+            display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+            padding: 16px; background: transparent; border: 1px solid #2a3441; border-radius: 12px;
+            color: #aaa; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-pre-secondary:active { background: rgba(255,255,255,0.05); transform: scale(0.98); }
+
+        /* ---------------- LOGIN SCREEN (Screenshot 2) ---------------- */
         #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 9999;
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            display: none; flex-direction: column; min-height: 100vh; padding: 40px 20px 20px;
+            background: #0f151d; animation: fadeIn 0.5s ease forwards;
         }
+        .login-header { text-align: center; margin-bottom: 40px; }
+        .login-header .logo-mini { width: 70px; height: 70px; background: #1a2330; border-radius: 50%; margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 30px; color: #00ffff; box-shadow: 0 0 20px rgba(0,255,255,0.1); }
+        .login-header h2 { font-size: 32px; letter-spacing: 3px; color: #fff; font-weight: 800; }
+        .login-header h2 span { color: #00ffff; }
+        .login-header p { color: #555; font-size: 12px; letter-spacing: 2px; margin-top: 5px; }
+
+        .login-box { background: #1a2330; border-radius: 20px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .login-box h3 { font-size: 20px; margin-bottom: 5px; color: #fff; }
+        .login-box .sub { font-size: 13px; color: #666; margin-bottom: 25px; }
+
+        .input-group { background: #121a24; border-radius: 12px; padding: 5px 15px; display: flex; align-items: center; margin-bottom: 15px; border: 1px solid transparent; transition: 0.3s; }
+        .input-group:focus-within { border-color: #00ffff; box-shadow: 0 0 10px rgba(0,255,255,0.1); }
+        .input-group .ico { color: #666; font-size: 18px; margin-right: 10px; }
+        .input-group input { width: 100%; padding: 12px 0; background: transparent; border: none; color: #fff; font-size: 14px; outline: none; }
+        .input-group .toggle-eye { color: #666; cursor: pointer; }
+
+        .login-note { font-size: 12px; color: #888; margin: 15px 0; line-height: 1.5; }
         
-        #bg-video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: 0; filter: brightness(0.5);
-        }
-
-        .glass-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-            background: rgba(10, 13, 20, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-        }
-
-        .login-wrapper { position: relative; z-index: 2; width: 90%; max-width: 400px; text-align: center; padding: 20px; }
-        
-        .brand-title { font-size: 42px; font-weight: 800; letter-spacing: 2px; color: #fff; animation: pulseGlow 3s infinite; }
-        .brand-title span { color: #00ffff; }
-        .brand-sub { color: #aaa; font-size: 12px; letter-spacing: 5px; margin-bottom: 30px; margin-top: -5px; }
-
-        .glass-box {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 25px 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        }
-        .glass-box h3 { color: #ddd; margin-bottom: 20px; font-size: 16px; letter-spacing: 1px; }
-
-        .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; font-size: 12px; color: #aaa; margin-bottom: 5px; }
-        .input-group input {
-            width: 100%; padding: 14px 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px; color: #fff; font-size: 15px; outline: none; transition: 0.3s;
-        }
-        .input-group input:focus { border-color: #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); }
-
         .btn-login {
-            width: 100%; padding: 16px; background: #00ffff; color: #000; border: none; border-radius: 12px;
-            font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; margin-top: 5px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); letter-spacing: 2px;
+            width: 100%; padding: 14px; background: transparent; border: 1px solid #00ffff; border-radius: 12px;
+            color: #00ffff; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-login:active { transform: scale(0.95); }
+        .btn-login:active { background: rgba(0,255,255,0.1); transform: scale(0.98); }
 
-        #login-error { display: none; color: #ff5555; font-size: 13px; margin-top: 15px; font-weight: bold; }
+        #login-error { display: none; color: #ff4444; font-size: 13px; margin-top: 15px; text-align: center; font-weight: bold; }
 
-        /* --- MAIN APP --- */
-        #app-screen { display: none; padding: 20px 15px 100px; max-width: 500px; margin: 0 auto; animation: fadeIn 1s ease; background: #0a0d14; min-height: 100vh; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 10px; }
-        .header .title { font-size: 28px; font-weight: 700; color: #fff; }
-        .header .title span { color: #00ffff; }
-        .header .clock { font-size: 14px; background: rgba(0,255,255,0.1); padding: 6px 14px; border-radius: 20px; color: #00ffff; border: 1px solid rgba(0,255,255,0.2); }
+        /* ---------------- MAIN DASHBOARD (Screenshot 4) ---------------- */
+        #app-screen { display: none; padding: 20px 15px 100px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.6s ease forwards; background: #0f151d; min-height: 100vh; }
+        
+        /* Header Dashboard */
+        .dash-header { text-align: center; margin-bottom: 20px; }
+        .dash-header h1 { font-family: 'Georgia', serif; font-size: 38px; color: #fff; letter-spacing: 1px; }
+        .dash-header p { color: #555; font-size: 10px; letter-spacing: 2px; margin-top: -5px; }
 
-        .profile-card { background: linear-gradient(135deg, #121820, #1c2736); border-radius: 20px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
-        .profile-left { display: flex; align-items: center; gap: 15px; }
-        .avatar { width: 55px; height: 55px; background: linear-gradient(135deg, #00ffff, #0088cc); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 24px; color: #000; }
-        .profile-info h3 { font-size: 18px; margin-bottom: 2px; }
+        /* User Profile Card */
+        .profile-card { background: #1a2330; border-radius: 20px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.03); position: relative; overflow: hidden; }
+        .profile-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(0,255,255,0.05), transparent 60%); pointer-events: none; }
+        .profile-left { display: flex; align-items: center; gap: 15px; position: relative; z-index: 1; }
+        .avatar { width: 55px; height: 55px; background: #00bfff; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 24px; box-shadow: 0 0 20px rgba(0,191,255,0.2); }
+        .profile-info h3 { font-size: 18px; margin-bottom: 2px; color: #fff; }
         .profile-info p { font-size: 11px; color: #888; }
-        .badge-admin { background: #00ffff; color: #000; font-size: 10px; padding: 2px 12px; border-radius: 20px; font-weight: bold; display: inline-block; }
-        .badge-user { background: #2a3441; color: #aaa; font-size: 10px; padding: 2px 12px; border-radius: 20px; display: inline-block; }
+        .badge-owner { background: #232e3c; border: 1px solid #3a4a5e; padding: 4px 12px; border-radius: 20px; font-size: 10px; color: #aaa; display: inline-block; margin-top: 4px; }
+        .badge-admin { background: #00ffff; color: #000; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; display: inline-block; margin-top: 4px; }
+        .profile-right { position: relative; z-index: 1; color: #00ffff; font-size: 20px; background: #232e3c; padding: 10px; border-radius: 50%; }
 
+        /* Stats Bar */
+        .stats-bar { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 10px; }
+        .stat-box { flex: 1; background: #1a2330; border-radius: 16px; padding: 15px 10px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-icon-wrap { width: 45px; height: 45px; border-radius: 50%; margin: 0 auto 8px; display: flex; justify-content: center; align-items: center; font-size: 18px; }
+        .stat-icon-wrap.green { background: rgba(0,255,100,0.1); color: #00ff64; }
+        .stat-icon-wrap.blue { background: rgba(0,255,255,0.1); color: #00ffff; }
+        .stat-icon-wrap.yellow { background: rgba(255,200,0,0.1); color: #ffcc00; }
+        .stat-box h4 { font-size: 16px; margin-bottom: 2px; color: #fff; }
+        .stat-box p { font-size: 10px; color: #666; }
+
+        /* Jadwal Sholat Section */
+        .sholat-section { background: #1a2330; border-radius: 20px; padding: 20px 15px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.03); }
+        .sholat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .sholat-header-left { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #ddd; }
+        .sholat-header-left .ico { color: #00ffff; }
+        .sholat-header-right { background: #232e3c; padding: 4px 12px; border-radius: 20px; font-size: 10px; color: #00ffff; }
+
+        .sholat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 15px; }
+        .sholat-item { background: #121a24; border-radius: 12px; padding: 8px 4px; text-align: center; }
+        .sholat-item.active { background: #a855f7; box-shadow: 0 0 15px rgba(168,85,247,0.3); }
+        .sholat-item .icon { font-size: 14px; margin-bottom: 4px; display: block; }
+        .sholat-item.active .icon { color: #fff; }
+        .sholat-item .name { font-size: 9px; color: #888; display: block; margin-bottom: 2px; }
+        .sholat-item.active .name { color: #e0d4ff; }
+        .sholat-item .time { font-size: 12px; color: #ddd; font-weight: bold; }
+        .sholat-item.active .time { color: #fff; }
+
+        .location-select { background: #121a24; border-radius: 12px; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; color: #aaa; font-size: 12px; cursor: pointer; }
+        .location-select .ico { color: #00ffff; }
+
+        /* Menu Grid */
+        .section-title { color: #fff; font-size: 16px; margin-bottom: 15px; font-weight: bold; }
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .menu-item { background: #121820; border-radius: 16px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
-        .menu-item:active { transform: scale(0.92); }
+        .menu-item { background: #1a2330; border-radius: 16px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.03); }
+        .menu-item:active { transform: scale(0.95); background: #232e3c; }
         .menu-item .icon { font-size: 28px; margin-bottom: 8px; display: block; }
-        .menu-item h4 { font-size: 14px; margin-bottom: 4px; }
+        .menu-item h4 { font-size: 13px; margin-bottom: 4px; color: #fff; }
         .menu-item p { font-size: 10px; color: #666; }
         .menu-item.admin-btn { border-color: #00ffff; }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9997; background: #0a0d14; padding: 20px; overflow-y: auto; animation: slideUp 0.5s ease forwards; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 10px; }
-        .admin-header h2 { color: #00ffff; font-size: 22px; }
-        .admin-back { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; }
-        
-        .admin-card { background: #121820; border-radius: 16px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #00ffff; }
-        .admin-card h3 { font-size: 15px; margin-bottom: 10px; color: #fff; }
-        
+        /* Hidden Sub Pages & Admin Panel */
+        .sub-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #0f151d; padding: 20px; overflow-y: auto; animation: fadeIn 0.3s ease forwards; }
+        .sub-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-top: 10px; }
+        .sub-header .back { color: #fff; font-size: 24px; cursor: pointer; background: #1a2330; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 12px; }
+        .sub-header h2 { font-size: 18px; color: #fff; }
+        .sub-btn { background: transparent; border: 1px solid #00ffff; color: #00ffff; padding: 15px; border-radius: 12px; text-align: center; font-weight: bold; text-decoration: none; display: block; margin-bottom: 15px; }
+        .sub-btn:active { background: rgba(0,255,255,0.1); }
+
+        /* Admin Panel Specific */
+        .admin-card { background: #1a2330; border-radius: 16px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #00ffff; }
+        .admin-card h3 { font-size: 15px; color: #fff; margin-bottom: 10px; }
         .input-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        .input-row input { flex: 1; padding: 10px; background: #1e2732; border: 1px solid #2a3441; border-radius: 8px; color: white; min-width: 100px; }
+        .input-row input { flex: 1; padding: 10px; background: #121a24; border: 1px solid #2a3441; border-radius: 8px; color: white; min-width: 100px; outline: none; }
+        .input-row input:focus { border-color: #00ffff; }
         .input-row button { padding: 10px 15px; background: #00ffff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .input-row button:active { transform: scale(0.95); }
-        
-        .user-list-item { background: #1e2732; padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .user-list-item { background: #121a24; padding: 10px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #2a3441; }
         .user-list-item span { font-size: 14px; color: #ddd; }
         .user-list-item .del-btn { background: #ff4444; border: none; padding: 5px 12px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-
-        /* --- SUB PAGE (APK) --- */
-        .sub-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9996; background: #0a0d14; padding: 20px; overflow-y: auto; animation: slideUp 0.4s ease forwards; }
-        .sub-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-top: 10px; }
-        .sub-header .back { color: #fff; font-size: 28px; cursor: pointer; background: rgba(255,255,255,0.05); width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 12px; }
-        .sub-menu-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        .sub-btn { background: linear-gradient(135deg, #00ffff, #0099ff); color: #000; padding: 20px; border-radius: 16px; text-align: center; font-weight: bold; font-size: 16px; text-decoration: none; display: block; }
-        .sub-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 
-    <!-- 1. INTRO VIDEO + LOGIN SCREEN -->
+    <!-- AUDIO PLAYER (Agar tidak mati saat pindah halaman) -->
+    <audio id="bg-music" loop style="display:none;">
+        <source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ==================== PAGE 1: PRE-LOGIN ==================== -->
+    <div id="pre-login-screen">
+        <div class="pre-logo-area fade-in d1">
+            <div class="pre-logo">MOSHI<span>'X</span></div>
+            <div class="pre-tagline">GACOR • TERUPDATE • STABIL</div>
+        </div>
+
+        <div class="pre-info-box fade-in d2">
+            <div class="shield">🛡️</div>
+            <h3>MOSHI BUG</h3>
+            <p>Aplikasi dengan design elegant dan fitur terbaru. Pengembangan langsung oleh JIMMY.</p>
+        </div>
+
+        <div class="pre-actions fade-in d3">
+            <div style="color: #fff; margin-bottom: 10px; font-size: 14px;">Page awal sebelum masuk</div>
+            
+            <button class="btn-pre-primary" onclick="goToLogin()">
+                🚀 LOGIN TO MOSHI
+            </button>
+            
+            <button class="btn-pre-secondary" onclick="window.location.href='https://wa.me/6287852990112'">
+                📞 CONTACT SUPPORT
+            </button>
+        </div>
+        
+        <div style="text-align: center; margin-top: auto; color: #333; font-size: 10px; padding-top: 20px;">Versi 2.0.1 © 2026</div>
+    </div>
+
+    <!-- ==================== PAGE 2: LOGIN ==================== -->
     <div id="login-screen">
-        <video id="bg-video" src="https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4" muted autoplay loop></video>
-        <div class="glass-layer"></div>
+        <div class="login-header fade-in d1">
+            <div class="logo-mini">🦊</div>
+            <h2>MOSHI<span>'X</span></h2>
+            <p>Silahkan Login</p>
+        </div>
 
-        <div class="login-wrapper">
-            <div class="brand-title anim-fade">MOSHI <span>- X</span></div>
-            <div class="brand-sub anim-fade delay-1">[ Beta ]</div>
+        <div class="login-box fade-in d2">
+            <h3>Welcome back</h3>
+            <div class="sub">Masukkan Akunmu</div>
 
-            <div class="glass-box anim-slide delay-1">
-                <h3>🔐 AKSES APLIKASI</h3>
-                <div class="input-group">
-                    <label>Username</label>
-                    <!-- value="" => Artinya KOSONG saat dibuka -->
-                    <input type="text" id="inputUser" placeholder="Masukkan username" value="">
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="inputPass" placeholder="Masukkan password" value="">
-                </div>
-                <button class="btn-login" onclick="doLogin()">MASUK</button>
-                <div id="login-error">⚠️ Akses di tolak! Username atau Password salah.</div>
+            <div class="input-group">
+                <span class="ico">👤</span>
+                <input type="text" id="inputUser" placeholder="Username">
             </div>
-            <div style="position:relative; z-index:2; margin-top:15px; color:#888; font-size:11px; display:flex; justify-content:center; gap:5px;">
-                <span>🕒</span> <span id="lock-clock">00:00:00</span>
+            
+            <div class="input-group">
+                <span class="ico">🔒</span>
+                <input type="password" id="inputPass" placeholder="Password">
+                <span class="toggle-eye" onclick="togglePass()">👁️</span>
             </div>
+
+            <div class="login-note">Sebelum masuk ke aplikasi wajib memasukan username akun dan password</div>
+
+            <button class="btn-login" onclick="doLogin()">
+                SIGN IN ➜
+            </button>
+
+            <div id="login-error">⚠️ Akses ditolak! Username/Password salah.</div>
+        </div>
+        
+        <div style="text-align: center; margin-top: auto; color: #333; font-size: 10px; padding-top: 30px; letter-spacing: 2px;">
+            MOSHI TEAM <br> v2.0.1 © 2026
         </div>
     </div>
 
-    <!-- 2. MAIN APP -->
+    <!-- ==================== PAGE 3: DASHBOARD ==================== -->
     <div id="app-screen">
-        <div class="header">
-            <div class="title">MOSHI<span>.</span></div>
-            <div class="clock" id="app-clock">00:00:00</div>
+        <div class="dash-header fade-in d1">
+            <h1>moshi</h1>
+            <p>Design by JIMMY and Enjoy For Use This Apaps</p>
         </div>
 
-        <div class="profile-card">
+        <div class="profile-card fade-in d2">
             <div class="profile-left">
                 <div class="avatar">M</div>
                 <div class="profile-info">
-                    <h3 id="displayName">User</h3>
-                    <p>Selamat Datang!</p>
-                    <span id="roleBadge" class="badge-user">MEMBER</span>
+                    <p>Ahlan Wa Sahlan!!</p>
+                    <h3 id="displayName">Cylaa</h3>
+                    <span id="roleBadge" class="badge-owner">OWNER</span>
                 </div>
             </div>
-            <div style="color:#00ffff;">⚡</div>
+            <div class="profile-right">⏱️</div>
         </div>
 
-        <div class="grid-menu">
-            <div class="menu-item" onclick="window.location.href='https://www.slazzer.com/'">
-                <span class="icon">🖼️</span><h4>Remove BG</h4><p>Teleport Web</p>
+        <div class="stats-bar fade-in d3">
+            <div class="stat-box">
+                <div class="stat-icon-wrap green">👥</div>
+                <h4>1</h4>
+                <p>Online Users</p>
             </div>
-            <div class="menu-item" onclick="window.location.href='https://ssstik.io/id'">
-                <span class="icon">🎵</span><h4>Download TT</h4><p>Teleport Web</p>
+            <div class="stat-box">
+                <div class="stat-icon-wrap blue">🔗</div>
+                <h4>0</h4>
+                <p>Active Connections</p>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon-wrap yellow">📅</div>
+                <h4 style="font-size: 11px;">Lifetime</h4>
+                <p>Expiration</p>
+            </div>
+        </div>
+
+        <!-- JADWAL SHOLAT -->
+        <div class="sholat-section fade-in d3">
+            <div class="sholat-header">
+                <div class="sholat-header-left">
+                    <span class="ico">🕌</span> JADWAL SHOLAT
+                </div>
+                <div class="sholat-header-right" id="nextSholatInfo">MENUJU ISYA 00:26:47</div>
+            </div>
+            
+            <div class="sholat-grid" id="sholatGrid">
+                <div class="sholat-item" id="sholat-subuh">
+                    <span class="icon">🌅</span>
+                    <span class="name">SUBUH</span>
+                    <span class="time" id="time-subuh">--:--</span>
+                </div>
+                <div class="sholat-item" id="sholat-dzuhur">
+                    <span class="icon">☀️</span>
+                    <span class="name">DZUHUR</span>
+                    <span class="time" id="time-dzuhur">--:--</span>
+                </div>
+                <div class="sholat-item" id="sholat-ashar">
+                    <span class="icon">🌤️</span>
+                    <span class="name">ASHAR</span>
+                    <span class="time" id="time-ashar">--:--</span>
+                </div>
+                <div class="sholat-item" id="sholat-maghrib">
+                    <span class="icon">🌙</span>
+                    <span class="name">MAGHRIB</span>
+                    <span class="time" id="time-maghrib">--:--</span>
+                </div>
+                <div class="sholat-item" id="sholat-isya">
+                    <span class="icon">🌑</span>
+                    <span class="name">ISYA</span>
+                    <span class="time" id="time-isya">--:--</span>
+                </div>
+            </div>
+
+            <div class="location-select" id="locationDisplay">
+                <span class="ico">📍</span>
+                <span id="cityName">Memuat Lokasi...</span>
+                <span>⌄</span>
+            </div>
+        </div>
+
+        <!-- MENU -->
+        <div class="section-title fade-in d1">Beranda</div>
+        <div class="grid-menu fade-in d2">
+            <div class="menu-item" onclick="teleport('https://www.slazzer.com/')">
+                <span class="icon">🖼️</span><h4>Remove BG</h4><p>Slazzer.com</p>
+            </div>
+            <div class="menu-item" onclick="teleport('https://ssstik.io/id')">
+                <span class="icon">🎵</span><h4>Download TT</h4><p>Hapus Watermark</p>
             </div>
             <div class="menu-item" onclick="openSubPage('apkpremium')">
-                <span class="icon">📦</span><h4>APK PREMIUM</h4><p>Download</p>
+                <span class="icon">📦</span><h4>APK PREMIUM</h4><p>Movie & Foto HD</p>
             </div>
-            <div class="menu-item" onclick="window.location.href='https://quran.com/id'">
-                <span class="icon">📖</span><h4>Al-Qur'an</h4><p>Teleport Web</p>
+            <div class="menu-item" onclick="teleport('https://quran.com/id')">
+                <span class="icon">📖</span><h4>Al-Qur'an</h4><p>Lengkap + Latin</p>
             </div>
             <div class="menu-item" onclick="window.location.href='https://wa.me/6287852990112'">
-                <span class="icon">📞</span><h4>Hubungi Owner</h4><p>Request Update</p>
+                <span class="icon">📞</span><h4>Hubungi Owner</h4><p>Update</p>
             </div>
-            <!-- Admin Panel Button (Akan muncul otomatis jika role admin) -->
+            <!-- Admin Button -->
             <div class="menu-item admin-btn" id="btn-admin-panel" onclick="openAdminPanel()" style="display:none;">
-                <span class="icon" style="color:#00ffff;">🛡️</span><h4 style="color:#00ffff;">Admin Panel</h4><p>Manage Akun</p>
+                <span class="icon" style="color:#00ffff;">🛡️</span><h4 style="color:#00ffff;">Admin Panel</h4><p>Control Users</p>
             </div>
         </div>
         
         <div style="text-align: center; color: #444; font-size: 10px; margin-top: 20px;">APK ini di buat untuk membantu sesama orang.</div>
     </div>
 
-    <!-- 3. SUB PAGE: APK PREMIUM -->
+    <!-- SUBPAGE: APK PREMIUM -->
     <div id="sub-apkpremium" class="sub-page">
         <div class="sub-header">
             <span class="back" onclick="closeSubPage('apkpremium')">‹</span>
-            <h2>📦 APK PREMIUM</h2>
+            <h2>APK PREMIUM</h2>
         </div>
-        <div class="sub-menu-grid">
-            <a href="https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file" target="_blank" class="sub-btn">▶ APK MOVIE</a>
-            <a href="https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936" target="_blank" class="sub-btn">📸 APK HD FOTO</a>
-        </div>
+        <a href="https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file" target="_blank" class="sub-btn">▶ APK MOVIE</a>
+        <a href="https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936" target="_blank" class="sub-btn">📸 APK HD FOTO</a>
     </div>
 
-    <!-- 4. ADMIN PANEL -->
-    <div id="admin-panel">
-        <div class="admin-header">
-            <h2>🛡️ Admin Panel</h2>
-            <button class="admin-back" onclick="closeAdminPanel()">Kembali</button>
+    <!-- SUBPAGE: ADMIN PANEL -->
+    <div id="admin-panel" class="sub-page">
+        <div class="sub-header">
+            <span class="back" onclick="closeAdminPanel()">‹</span>
+            <h2 style="color:#00ffff;">Admin Panel</h2>
         </div>
-        
         <div class="admin-card">
-            <h3>➕ Tambah Akun Baru</h3>
+            <h3>Tambah User Baru</h3>
             <div class="input-row">
-                <input type="text" id="newUser" placeholder="Username Baru">
-                <input type="text" id="newPass" placeholder="Password Baru">
+                <input type="text" id="newUser" placeholder="Username">
+                <input type="text" id="newPass" placeholder="Password">
                 <button onclick="addUser()">Simpan</button>
             </div>
         </div>
-
         <div class="admin-card">
-            <h3>👥 Daftar Pengguna</h3>
-            <div id="userListContainer">
-                <!-- Ini akan diisi JS -->
-            </div>
+            <h3>Daftar Pengguna</h3>
+            <div id="userListContainer"></div>
         </div>
-        <div style="text-align: center; color: #444; font-size: 10px; margin-top: 20px;">Hak Akses dimiliki oleh JIMMY sebagai Owner.</div>
     </div>
 
-    <!-- AUDIO -->
-    <audio id="bg-music" loop>
-        <source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg">
-    </audio>
-
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // --- 1. DATABASE AKUN (SUDAH ADA AKUN ADMIN KHUSUS) ---
+        // ========== 1. DATABASE ==========
         let usersDB = JSON.parse(localStorage.getItem('moshiUsers')) || {
-            // 🔥 AKUN ADMIN KHUSUS: Username: admin / Password: admin123 (Jangan lupa kasih tau pembeli)
             'admin': { pass: 'admin123', name: 'Jimmy', role: 'admin' },
             'demo': { pass: 'demo123', name: 'User Demo', role: 'member' }
         };
 
-        // --- 2. LOGIN LOGIC ---
+        // ========== 2. LOGIN & NAVIGATION ==========
+        function goToLogin() {
+            document.getElementById('pre-login-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+
+        function togglePass() {
+            const p = document.getElementById('inputPass');
+            p.type = p.type === 'password' ? 'text' : 'password';
+        }
+
         function doLogin() {
             const u = document.getElementById('inputUser').value.trim();
             const p = document.getElementById('inputPass').value.trim();
-            const errorEl = document.getElementById('login-error');
+            const err = document.getElementById('login-error');
             const audio = document.getElementById('bg-music');
 
-            // Cek jika kosong
-            if(!u || !p) {
-                errorEl.innerText = "⚠️ Username dan Password tidak boleh kosong!";
-                errorEl.style.display = 'block';
+            if(!usersDB[u] || usersDB[u].pass !== p) {
+                err.style.display = 'block';
+                setTimeout(() => err.style.display = 'none', 3000);
                 return;
             }
 
-            if(!usersDB[u]) {
-                errorEl.innerText = "⚠️ Akses di tolak! Username atau Password salah.";
-                errorEl.style.display = 'block';
-                return;
-            }
-            if(usersDB[u].pass !== p) {
-                errorEl.innerText = "⚠️ Akses di tolak! Username atau Password salah.";
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            // Login BERHASIL
-            errorEl.style.display = 'none';
+            // Berhasil login
+            err.style.display = 'none';
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('app-screen').style.display = 'block';
             
-            const userData = usersDB[u];
-            document.getElementById('displayName').innerText = userData.name;
-            
-            const roleBadge = document.getElementById('roleBadge');
+            const user = usersDB[u];
+            document.getElementById('displayName').innerText = user.name;
+            const badge = document.getElementById('roleBadge');
             const adminBtn = document.getElementById('btn-admin-panel');
 
-            if(userData.role === 'admin') {
-                roleBadge.innerText = 'ADMIN';
-                roleBadge.className = 'badge-admin';
+            if(user.role === 'admin') {
+                badge.innerText = 'ADMIN';
+                badge.className = 'badge-admin';
                 adminBtn.style.display = 'block';
             } else {
-                roleBadge.innerText = 'MEMBER';
-                roleBadge.className = 'badge-user';
+                badge.innerText = 'MEMBER';
+                badge.className = 'badge-owner';
                 adminBtn.style.display = 'none';
             }
-            // Play music after login
+
+            // PUTAR MUSIC SAAT LOGIN BERHASIL
             audio.play().catch(()=>{});
+            
+            // Jalankan Jadwal Sholat
+            getLocationAndPrayerTimes();
         }
 
-        // --- 3. CLOCK & AUDIO INIT ---
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', { hour12: false });
-            document.getElementById('lock-clock').innerText = time;
-            document.getElementById('app-clock').innerText = time;
+        // ========== 3. TELEPORT & SUBPAGE ==========
+        function teleport(url) {
+            window.location.href = url;
         }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // --- 4. NAVIGATION ---
         function openSubPage(id) { document.getElementById(`sub-${id}`).style.display = 'block'; }
         function closeSubPage(id) { document.getElementById(`sub-${id}`).style.display = 'none'; }
-        function openAdminPanel() { 
-            document.getElementById('admin-panel').style.display = 'block';
-            renderUserList(); 
-        }
+        function openAdminPanel() { document.getElementById('admin-panel').style.display = 'block'; renderUserList(); }
         function closeAdminPanel() { document.getElementById('admin-panel').style.display = 'none'; }
 
-        // --- 5. ADMIN FUNCTIONS ---
+        // ========== 4. ADMIN FUNCTIONS ==========
         function saveDB() { localStorage.setItem('moshiUsers', JSON.stringify(usersDB)); }
-
         function renderUserList() {
-            const container = document.getElementById('userListContainer');
-            container.innerHTML = '';
-            for (const [username, data] of Object.entries(usersDB)) {
-                const div = document.createElement('div');
-                div.className = 'user-list-item';
-                div.innerHTML = `
-                    <span>${username} <span style="font-size:10px; color:#888;">(${data.role})</span></span>
-                    <button class="del-btn" onclick="deleteUser('${username}')">Hapus</button>
-                `;
-                container.appendChild(div);
+            const c = document.getElementById('userListContainer'); c.innerHTML = '';
+            for (const [u, d] of Object.entries(usersDB)) {
+                c.innerHTML += `<div class="user-list-item"><span>${u} (${d.role})</span><button class="del-btn" onclick="deleteUser('${u}')">Hapus</button></div>`;
             }
         }
-
         function addUser() {
             const u = document.getElementById('newUser').value.trim();
             const p = document.getElementById('newPass').value.trim();
-            if(!u || !p) return alert("Isi Username dan Password!");
-            if(usersDB[u]) return alert("Username sudah ada!");
-            
+            if(!u || !p || usersDB[u]) return alert("Data tidak valid atau user sudah ada!");
             usersDB[u] = { pass: p, name: u, role: 'member' };
-            saveDB();
-            renderUserList();
-            document.getElementById('newUser').value = '';
-            document.getElementById('newPass').value = '';
-            alert("Akun berhasil dibuat!");
+            saveDB(); renderUserList(); alert("Berhasil!");
+        }
+        function deleteUser(u) {
+            if(u === 'admin') return alert("Tidak bisa hapus admin utama!");
+            if(confirm(`Hapus ${u}?`)) { delete usersDB[u]; saveDB(); renderUserList(); }
         }
 
-        function deleteUser(username) {
-            if(username === 'admin') return alert("Tidak bisa menghapus akun Admin utama!");
-            if(!confirm(`Yakin ingin menghapus user "${username}"?`)) return;
-            delete usersDB[username];
-            saveDB();
-            renderUserList();
+        // ========== 5. JADWAL SHOLAT OTOMATIS (REAL-TIME) ==========
+        function getLocationAndPrayerTimes() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const { latitude, longitude } = pos.coords;
+                    fetchPrayerTimes(latitude, longitude);
+                }, () => {
+                    // Fallback Jakarta jika izin lokasi ditolak
+                    document.getElementById('cityName').innerText = "Jakarta (Default)";
+                    fetchPrayerTimes(-6.2088, 106.8456);
+                });
+            } else {
+                document.getElementById('cityName').innerText = "Jakarta (Default)";
+                fetchPrayerTimes(-6.2088, 106.8456);
+            }
+        }
+
+        function fetchPrayerTimes(lat, lon) {
+            const today = new Date();
+            const d = today.getDate(), m = today.getMonth() + 1, y = today.getFullYear();
+            const url = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=${lat}&longitude=${lon}&method=2`;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    const timings = data.data.timings;
+                    document.getElementById('cityName').innerText = data.data.meta.timezone;
+                    updateSholatUI(timings, data.data.meta.timezone);
+                })
+                .catch(() => {
+                    document.getElementById('cityName').innerText = "Offline Mode";
+                });
+        }
+
+        function updateSholatUI(timings, timezone) {
+            const names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            const ids = ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'];
+            
+            // Convert time to 24h format and set UI
+            names.forEach((n, i) => {
+                document.getElementById(`time-${ids[i]}`).innerText = timings[n];
+            });
+
+            // Highlight Active & Countdown
+            setInterval(() => {
+                const now = new Date();
+                const times = names.map(n => {
+                    const [h, m] = timings[n].split(':').map(Number);
+                    const d = new Date(); d.setHours(h, m, 0, 0);
+                    return d;
+                });
+
+                let nextIndex = -1;
+                for(let i=0; i<times.length; i++) {
+                    if(now < times[i]) { nextIndex = i; break; }
+                }
+                if(nextIndex === -1) {
+                    const tom = new Date(times[0]); tom.setDate(tom.getDate() + 1);
+                    times.push(tom);
+                    nextIndex = times.length - 1;
+                }
+
+                document.querySelectorAll('.sholat-item').forEach(el => el.classList.remove('active'));
+                if(nextIndex < ids.length) document.getElementById(`sholat-${ids[nextIndex]}`).classList.add('active');
+
+                const diff = times[nextIndex] - now;
+                if(diff > 0) {
+                    const h = Math.floor(diff / 3600000);
+                    const m = Math.floor((diff % 3600000) / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    const nameNext = names[nextIndex] || names[0];
+                    document.getElementById('nextSholatInfo').innerText = 
+                        `MENUJU ${nameNext.toUpperCase()} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                }
+            }, 1000);
         }
     </script>
 </body>
