@@ -1,104 +1,117 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOSHI - Dashboard</title>
+    <title>MOSHI - JIMMY</title>
     <style>
         :root {
-            --bg-color: #0a0e14;
-            --container-bg: #151a23;
-            --cyan: #00d4ff;
+            --bg-color: #0b0f12;
+            --accent-cyan: #00e5ff;
             --white: #ffffff;
+            --card-bg: #1a2026;
         }
-
-        body {
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--bg-color);
             color: var(--white);
-            font-family: sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            height: 100%;
+            overflow-x: hidden;
         }
-
-        .container {
-            width: 90%;
-            max-width: 400px;
-            background: rgba(21, 26, 35, 0.95);
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            border: 1px solid rgba(0, 212, 255, 0.3);
+        /* Lockscreen */
+        #lockscreen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; text-align: center;
         }
-
-        .clock { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: var(--cyan); }
-        .btn-masuk { background: var(--cyan); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; border: none; margin-top: 15px; }
-        .hidden { display: none; }
+        #main-app { display: none; padding: 20px; }
         
-        .grid-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .box { background: rgba(28, 35, 45, 0.9); padding: 15px; border-radius: 10px; border: 1px solid var(--cyan); cursor: pointer; color: var(--white); text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .clock { font-size: 2rem; font-weight: bold; margin-bottom: 20px; color: var(--accent-cyan); }
+        .btn-enter {
+            background: transparent; border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan); padding: 15px 40px;
+            font-size: 1.2rem; cursor: pointer; border-radius: 8px;
+            text-transform: uppercase;
+        }
         
-        .modal { background: var(--container-bg); padding: 20px; border-radius: 15px; margin-top: 20px; border: 1px solid var(--cyan); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 300px; z-index: 10; }
-        .modal a { display: block; background: var(--cyan); color: #000; padding: 10px; margin: 10px 0; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        /* Dashboard Layout */
+        .card {
+            background: var(--card-bg); border: 1px solid #333;
+            padding: 20px; border-radius: 15px; margin-bottom: 20px;
+        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .feature-box {
+            background: var(--card-bg); border: 1px solid var(--accent-cyan);
+            padding: 15px; border-radius: 10px; text-align: center; cursor: pointer;
+        }
+        .header-text { text-align: center; color: var(--accent-cyan); font-size: 2rem; }
+        
+        /* Hidden video/audio elements */
+        #bg-video { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; opacity: 0.2; }
     </style>
 </head>
 <body>
 
-    <!-- https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4 -->
-
+    <!-- Background Multimedia -->
+    <video autoplay muted loop id="bg-video">
+        <source src="https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4" type="video/mp4">
+    </video>
     <audio id="bg-audio" loop>
         <source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="lockscreen" class="container">
+    <!-- Lockscreen -->
+    <div id="lockscreen">
         <h1>MOSHI</h1>
-        <div id="clock1" class="clock"></div>
-        <button class="btn-masuk" onclick="enterApp()">MASUK</button>
+        <div class="clock" id="clock1"></div>
+        <button class="btn-enter" onclick="enterApp()">MASUK</button>
     </div>
 
-    <div id="dashboard" class="container hidden">
-        <h2>Dashboard MOSHI</h2>
-        <div id="clock2" class="clock"></div>
-        <p>Owner: JIMMY</p>
+    <!-- Main App -->
+    <div id="main-app">
+        <h1 class="header-text">JIMMY DASHBOARD</h1>
+        <div class="clock" id="clock2"></div>
         
-        <div class="grid-box">
-            <a class="box" href="https://www.slazzer.com" target="_blank">Remove BG</a>
-            <a class="box" href="https://tiktokia.com" target="_blank">TikTok Downloader</a>
-            <div class="box" onclick="showModal()">APK PREMIUM</div>
-            <a class="box" href="https://quran.com" target="_blank">Al-Qur'an Online</a>
-            <a class="box" style="grid-column: span 2;" href="https://wa.me/6287852990112" target="_blank">Hubungi Owner</a>
+        <div class="grid">
+            <div class="feature-box" onclick="window.open('https://www.slazzer.com', '_blank')">Remove BG</div>
+            <div class="feature-box">TikTok Downloader (MP3/NoBG)</div>
+            <div class="feature-box" onclick="toggleApkMenu()">APK PREMIUM</div>
+            <div class="feature-box" onclick="window.open('https://quran.com', '_blank')">Al-Qur'an Online</div>
         </div>
-        <p style="font-size: 10px; margin-top: 20px;">Fungsi APK: Aplikasi ini dibuat untuk membantu sesama orang.</p>
-    </div>
-
-    <div id="apk-modal" class="modal hidden">
-        <h3>Pilih APK:</h3>
-        <a href="https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file">APK MOVIE</a>
-        <a href="https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936">APK HD FOTO</a>
-        <button onclick="hideModal()" style="width: 100%; padding: 10px; border-radius: 5px; border: none; cursor: pointer; background: #eee;">Tutup</button>
+        
+        <div id="apk-menu" style="display:none; margin-top:20px;">
+            <div class="grid">
+                <div class="feature-box" onclick="window.location.href='https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file'">APK MOVIE</div>
+                <div class="feature-box" onclick="window.location.href='https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936'">APK HD FOTO</div>
+            </div>
+        </div>
+        
+        <div class="card" onclick="window.location.href='https://wa.me/6287852990112'">
+            <h3>HUBUNGI OWNER (JIMMY)</h3>
+        </div>
     </div>
 
     <script>
         function updateClock() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            document.getElementById('clock1').innerText = timeString;
-            document.getElementById('clock2').innerText = timeString;
+            const time = now.toLocaleTimeString();
+            document.getElementById('clock1').innerText = time;
+            document.getElementById('clock2').innerText = time;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
         function enterApp() {
+            document.getElementById('lockscreen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
             document.getElementById('bg-audio').play();
-            document.getElementById('lockscreen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
         }
-
-        function showModal() { document.getElementById('apk-modal').classList.remove('hidden'); }
-        function hideModal() { document.getElementById('apk-modal').classList.add('hidden'); }
+        
+        function toggleApkMenu() {
+            const menu = document.getElementById('apk-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
     </script>
 </body>
 </html>
