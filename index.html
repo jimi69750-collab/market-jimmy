@@ -4,76 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MOSHI - by JIMMY</title>
-    <!-- Font Arab untuk Nuansa -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Arab Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- RESET & FONTS --- */
+        /* --- RESET & BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: #080b12; color: #fff; overflow-x: hidden; }
         .arabic-font { font-family: 'Amiri', serif; }
 
-        /* --- PREMIUM ANIMATIONS --- */
-        @keyframes fadeSlide { 0% { opacity: 0; transform: translateY(40px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes spinGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes floatText { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-        
+        /* --- ANIMASI PREMIUM --- */
+        @keyframes splashIn { 
+            0% { transform: scale(1.4); opacity: 0; } 
+            40% { transform: scale(0.95); opacity: 1; } 
+            100% { transform: scale(1); opacity: 0; display: none; } 
+        }
+        @keyframes fadeSlide { 
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); } 
+            100% { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+        @keyframes floatGlow { 
+            0%, 100% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(0,255,255,0.2)); } 
+            50% { transform: translateY(-8px); filter: drop-shadow(0 0 30px rgba(0,255,255,0.6)); } 
+        }
+
         .anim-enter { animation: fadeSlide 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .delay-1 { animation-delay: 0.2s; } .delay-2 { animation-delay: 0.4s; } .delay-3 { animation-delay: 0.6s; }
+        .delay-1 { animation-delay: 0.4s; } .delay-2 { animation-delay: 0.7s; } .delay-3 { animation-delay: 1.0s; }
+        
+        ::-webkit-scrollbar { width: 0px; }
 
-        /* --- INTRO LOADING SCREEN (2.5 Detik) --- */
-        #loading-screen {
+        /* --- SPLASH SCREEN INSTAN (Tanpa Loading) --- */
+        #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 99999;
-            background: #080b12; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: #080b12; display: flex; justify-content: center; align-items: center;
+            animation: splashIn 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            pointer-events: none; /* Agar tidak bisa diklik */
         }
-        
-        /* Ring Loading */
-        .load-ring {
-            width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.05);
-            border-top: 4px solid #00ffff; border-right: 4px solid #a78bfa;
-            animation: spinGlow 1.2s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
-            margin-bottom: 25px; box-shadow: 0 0 30px rgba(0,255,255,0.1);
-        }
-
-        .load-content { text-align: center; position: relative; }
-        .load-content h1 { font-size: 52px; font-weight: 900; color: #fff; letter-spacing: 2px; margin-bottom: 5px; animation: floatText 2.5s ease-in-out infinite; }
-        .load-content h1 span { color: #00ffff; text-shadow: 0 0 20px rgba(0,255,255,0.2); }
-        .load-content p { font-family: 'Amiri', serif; font-size: 18px; color: #a78bfa; margin-bottom: 25px; letter-spacing: 2px; }
-        
-        /* Persentase Loading */
-        .load-percent { font-size: 28px; font-weight: 800; color: #fff; text-shadow: 0 0 10px rgba(0,255,255,0.2); margin-bottom: 10px; }
-        .loader-track { width: 200px; height: 3px; background: #1a2330; border-radius: 10px; margin: 0 auto; overflow: hidden; }
-        .loader-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #a78bfa, #00ffff); border-radius: 10px; transition: width 0.2s linear; }
+        .splash-content { text-align: center; }
+        .splash-content h1 { font-size: 72px; font-weight: 900; color: #fff; letter-spacing: 4px; margin-bottom: 10px; }
+        .splash-content h1 span { color: #00ffff; text-shadow: 0 0 40px rgba(0, 255, 255, 0.5); }
+        .splash-content p { font-size: 24px; color: #a78bfa; letter-spacing: 4px; }
 
         /* --- PRE-LOGIN PAGE --- */
         #pre-login-screen {
-            display: none; flex-direction: column; min-height: 100vh; padding: 40px 20px 20px;
-            background: #080b12;
+            display: flex; flex-direction: column; min-height: 100vh; padding: 40px 20px 20px;
+            background: #080b12; position: relative; z-index: 2;
         }
         .pre-logo-area { text-align: center; margin-top: 20px; }
         .pre-logo { font-size: 48px; font-weight: 900; color: #fff; letter-spacing: 2px; }
         .pre-logo span { color: #00ffff; }
         .pre-tagline { color: #555; font-size: 11px; letter-spacing: 3px; margin-top: 5px; }
-        .arab-text { font-family: 'Amiri', serif; font-size: 16px; color: #a78bfa; margin-top: 15px; }
+        .arab-text { font-family: 'Amiri', serif; font-size: 18px; color: #a78bfa; margin-top: 15px; animation: floatGlow 3s ease-in-out infinite; }
 
         .pre-info-box {
-            margin-top: 30px; background: rgba(26, 35, 48, 0.6); backdrop-filter: blur(10px);
-            border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 20px; padding: 30px; text-align: center;
+            margin-top: 30px; background: rgba(26, 35, 48, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 20px; padding: 30px; text-align: center; position: relative;
         }
-        .pre-info-box .shield { width: 60px; height: 60px; margin: 0 auto 15px; background: #080b12; border: 2px solid #00ffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #00ffff; font-size: 28px; box-shadow: 0 0 20px rgba(0,255,255,0.1); }
+        .pre-info-box .shield { width: 60px; height: 60px; margin: 0 auto 15px; background: #080b12; border: 2px solid #a78bfa; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #00ffff; font-size: 28px; }
         .pre-info-box h3 { margin-bottom: 10px; color: #fff; letter-spacing: 1px; }
         .pre-info-box p { font-size: 13px; color: #888; line-height: 1.6; }
 
         .pre-actions { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; }
-        .btn-pre-primary { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: linear-gradient(135deg, #00ffff, #a78bfa); border: none; border-radius: 16px; color: #000; font-weight: bold; font-size: 15px; cursor: pointer; }
-        .btn-pre-secondary { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(167,139,250,0.3); border-radius: 16px; color: #fff; font-weight: bold; font-size: 15px; cursor: pointer; }
+        .btn-pre-primary {
+            display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px;
+            background: linear-gradient(135deg, #00ffff, #a78bfa); border: none; border-radius: 16px;
+            color: #000; font-weight: bold; font-size: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 25px rgba(0,255,255,0.2);
+        }
+        .btn-pre-primary:active { transform: scale(0.95); }
+        
+        .btn-pre-secondary {
+            display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 16px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(167, 139, 250, 0.3); border-radius: 16px;
+            color: #fff; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-pre-secondary:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
 
         /* --- MAIN DASHBOARD --- */
         #app-screen { display: none; padding: 20px 15px 100px; max-width: 500px; margin: 0 auto; background: #080b12; min-height: 100vh; }
+        
         .dash-header { text-align: center; margin-bottom: 20px; }
-        .dash-header h1 { font-family: 'Amiri', serif; font-size: 42px; color: #fff; letter-spacing: 1px; }
+        .dash-header h1 { font-family: 'Amiri', serif; font-size: 44px; color: #fff; letter-spacing: 1px; }
         .dash-header p { color: #555; font-size: 10px; letter-spacing: 2px; margin-top: -5px; }
 
-        .profile-card { background: rgba(26, 35, 48, 0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(167, 139, 250, 0.2); }
+        .profile-card { background: rgba(26, 35, 48, 0.6); backdrop-filter: blur(12px); border-radius: 20px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(167, 139, 250, 0.2); }
         .profile-left { display: flex; align-items: center; gap: 15px; }
         .avatar { width: 55px; height: 55px; background: linear-gradient(135deg, #00ffff, #a78bfa); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #000; font-size: 24px; }
         .profile-info h3 { font-size: 18px; margin-bottom: 2px; color: #fff; }
@@ -86,8 +102,8 @@
         .stat-box h4 { font-size: 16px; margin-bottom: 2px; color: #fff; }
         .stat-box p { font-size: 10px; color: #666; }
 
-        /* Sholat */
-        .sholat-section { background: rgba(26, 35, 48, 0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px 15px; margin-bottom: 25px; border: 1px solid rgba(167, 139, 250, 0.2); }
+        /* --- JADWAL SHOLAT --- */
+        .sholat-section { background: rgba(26, 35, 48, 0.6); backdrop-filter: blur(12px); border-radius: 20px; padding: 20px 15px; margin-bottom: 25px; border: 1px solid rgba(167, 139, 250, 0.2); }
         .sholat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .sholat-header-left { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #ddd; }
         .sholat-header-right { background: rgba(0,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 10px; color: #00ffff; border: 1px solid rgba(0,255,255,0.2); }
@@ -103,7 +119,7 @@
         .sholat-item.active .time { color: #fff; }
         .location-select { background: rgba(18, 26, 36, 0.8); border-radius: 12px; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; color: #aaa; font-size: 12px; }
 
-        /* Menu */
+        /* --- MENU --- */
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .menu-item { background: rgba(26, 35, 48, 0.6); border-radius: 16px; padding: 20px 10px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(5px); transition: 0.2s; }
         .menu-item:active { transform: scale(0.92); background: rgba(0,255,255,0.05); }
@@ -111,11 +127,11 @@
         .menu-item h4 { font-size: 14px; color: #fff; }
         .menu-item p { font-size: 10px; color: #666; }
 
-        /* Modals */
-        .sub-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(8, 11, 18, 0.95); backdrop-filter: blur(10px); z-index: 9999; animation: fadeSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        /* --- MODALS (Glassmorphism) --- */
+        .sub-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(8, 11, 18, 0.95); backdrop-filter: blur(10px); z-index: 9999; animation: fadeSlide 0.5s forwards; }
         .glass-modal { width: 90%; max-width: 400px; margin: 20px auto; border-radius: 24px; background: rgba(26, 35, 48, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(167, 139, 250, 0.3); padding: 25px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
-        .btn-close-subtle { position: absolute; top: 15px; right: 20px; color: #888; font-size: 24px; cursor: pointer; background: rgba(255,255,255,0.03); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; border: none; }
-        .btn-close-subtle:active { background: rgba(255,255,255,0.1); transform: rotate(90deg); color: #fff; }
+        .btn-close { position: absolute; top: 15px; right: 20px; color: #888; font-size: 24px; cursor: pointer; transition: 0.3s; }
+        .btn-close:active { transform: rotate(90deg); color: #fff; }
         .modal-header { text-align: center; margin-bottom: 25px; margin-top: 10px; }
         .modal-header h2 { font-size: 20px; color: #fff; }
         .modal-header span { font-family: 'Amiri', serif; color: #a78bfa; font-size: 14px; display: block; margin-top: 5px; }
@@ -124,16 +140,11 @@
 </head>
 <body>
 
-    <!-- ==================== LOADING SCREEN (2.5 Detik) ==================== -->
-    <div id="loading-screen">
-        <div class="load-content">
-            <div class="load-ring"></div>
+    <!-- ==================== SPLASH SCREEN (ANIMASI INSTAN) ==================== -->
+    <div id="splash-screen">
+        <div class="splash-content">
             <h1>MOSHI<span>'X</span></h1>
             <p class="arabic-font">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
-            <div class="load-percent" id="percentText">0%</div>
-            <div class="loader-track">
-                <div class="loader-fill" id="progressFill"></div>
-            </div>
         </div>
     </div>
 
@@ -180,11 +191,11 @@
             <div class="stat-box"><span class="icon" style="color:#ffcc00;">📅</span><h4 style="font-size:11px;">Lifetime</h4><p>Expiration</p></div>
         </div>
 
-        <!-- JADWAL SHOLAT REALTIME -->
+        <!-- JADWAL SHOLAT -->
         <div class="sholat-section anim-enter delay-3">
             <div class="sholat-header">
                 <div class="sholat-header-left"><span style="color:#00ffff;">🕌</span> JADWAL SHOLAT</div>
-                <div class="sholat-header-right" id="nextSholatInfo">MENUJU ISYA 00:00:00</div>
+                <div class="sholat-header-right" id="nextSholatInfo">Memuat...</div>
             </div>
             <div class="sholat-grid" id="sholatGrid">
                 <div class="sholat-item" id="sholat-subuh"><span class="icon">🌅</span><span class="name">SUBUH</span><span class="time" id="time-subuh">--:--</span></div>
@@ -193,7 +204,7 @@
                 <div class="sholat-item" id="sholat-maghrib"><span class="icon">🌙</span><span class="name">MAGHRIB</span><span class="time" id="time-maghrib">--:--</span></div>
                 <div class="sholat-item" id="sholat-isya"><span class="icon">🌑</span><span class="name">ISYA</span><span class="time" id="time-isya">--:--</span></div>
             </div>
-            <div class="location-select" id="locationDisplay"><span style="color:#00ffff;">📍</span> <span id="cityName">Memuat Lokasi...</span></div>
+            <div class="location-select"><span style="color:#00ffff;">📍</span> <span id="cityName">Memuat Lokasi...</span></div>
         </div>
 
         <!-- MENU -->
@@ -208,26 +219,26 @@
 
     <!-- ==================== MODALS ==================== -->
     <div id="modal-slazzer" class="sub-page" onclick="closeModalOutside(event, 'slazzer')">
-        <div class="glass-modal"><button class="btn-close-subtle" onclick="closeModal('slazzer')">✕</button>
+        <div class="glass-modal"><div class="btn-close" onclick="closeModal('slazzer')">✕</div>
             <div class="modal-header"><h2>Remove Background</h2><span class="arabic-font">جَزَاكَ اللَّهُ خَيْرًا</span></div>
             <a href="https://www.slazzer.com/" target="_blank" class="sub-btn">🚀 Teleport ke Slazzer.com</a>
         </div>
     </div>
     <div id="modal-ssstik" class="sub-page" onclick="closeModalOutside(event, 'ssstik')">
-        <div class="glass-modal"><button class="btn-close-subtle" onclick="closeModal('ssstik')">✕</button>
+        <div class="glass-modal"><div class="btn-close" onclick="closeModal('ssstik')">✕</div>
             <div class="modal-header"><h2>TikTok Downloader</h2><span class="arabic-font">مَا شَاءَ اللَّهُ</span></div>
             <a href="https://ssstik.io/id" target="_blank" class="sub-btn">🚀 Teleport ke SSSTik.io</a>
         </div>
     </div>
     <div id="modal-apk" class="sub-page" onclick="closeModalOutside(event, 'apk')">
-        <div class="glass-modal"><button class="btn-close-subtle" onclick="closeModal('apk')">✕</button>
+        <div class="glass-modal"><div class="btn-close" onclick="closeModal('apk')">✕</div>
             <div class="modal-header"><h2>APK PREMIUM</h2><span class="arabic-font">سُبْحَانَ اللَّهِ</span></div>
             <a href="https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file" target="_blank" class="sub-btn">▶ APK MOVIE</a>
             <a href="https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936" target="_blank" class="sub-btn">📸 APK HD FOTO</a>
         </div>
     </div>
     <div id="modal-quran" class="sub-page" onclick="closeModalOutside(event, 'quran')">
-        <div class="glass-modal"><button class="btn-close-subtle" onclick="closeModal('quran')">✕</button>
+        <div class="glass-modal"><div class="btn-close" onclick="closeModal('quran')">✕</div>
             <div class="modal-header"><h2>Al-Qur'an Online</h2><span class="arabic-font">اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ</span></div>
             <a href="https://quran.com/id" target="_blank" class="sub-btn">📖 Baca Al-Qur'an</a>
         </div>
@@ -236,125 +247,85 @@
     <audio id="bg-music" loop style="display:none;"><source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg"></audio>
 
     <script>
-        // ===== 1. LOADING 2.5 DETIK DENGAN PERSENTASE =====
-        let progress = 0;
-        const fill = document.getElementById('progressFill');
-        const percentText = document.getElementById('percentText');
-        
-        const interval = setInterval(() => {
-            progress += 4; // Karena 2.5 detik -> 100/25 = 4 per 100ms
-            if(progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                
-                // Pindah halaman
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('pre-login-screen').style.display = 'flex';
-                document.getElementById('bg-music').play().catch(()=>{});
-            }
-            fill.style.width = progress + '%';
-            percentText.innerText = progress + '%';
-        }, 100);
-
-        // ===== 2. NAVIGATION =====
+        // ===== 1. NAVIGATION & MODALS =====
         function enterApp() { 
             document.getElementById('pre-login-screen').style.display = 'none'; 
             document.getElementById('app-screen').style.display = 'block'; 
+            document.getElementById('bg-music').play().catch(()=>{});
             getLocationAndPrayerTimes(); 
         }
-
-        // ===== 3. MODALS =====
         function openModal(id) { document.getElementById(`modal-${id}`).style.display = 'block'; }
         function closeModal(id) { document.getElementById(`modal-${id}`).style.display = 'none'; }
         function closeModalOutside(e, id) { if(e.target === document.getElementById(`modal-${id}`)) closeModal(id); }
 
-// ===== 4. JADWAL SHOLAT =====
-function getLocationAndPrayerTimes() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude);
-            },
-            () => {
+        // ===== 2. JADWAL SHOLAT (Dengan Logika Anti-Error) =====
+        function getLocationAndPrayerTimes() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude), 
+                    () => { document.getElementById('cityName').innerText = "Jakarta"; fetchPrayerTimes(-6.2088, 106.8456); }
+                );
+            } else {
                 document.getElementById('cityName').innerText = "Jakarta";
                 fetchPrayerTimes(-6.2088, 106.8456);
             }
-        );
-    } else {
-        document.getElementById('cityName').innerText = "Jakarta";
-        fetchPrayerTimes(-6.2088, 106.8456);
-    }
-}
-
-function fetchPrayerTimes(lat, lon) {
-    const d = new Date();
-    const url = `https://api.aladhan.com/v1/timings/${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}?latitude=${lat}&longitude=${lon}&method=2`;
-    
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('cityName').innerText = data.data.meta.timezone;
-            updateSholatUI(data.data.timings);
-        })
-        .catch(() => {
-            document.getElementById('cityName').innerText = "Offline";
-        });
-}
-
-function updateSholatUI(timings) {
-    const names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    const ids = ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'];
-    
-    // Isi waktu sholat ke dalam HTML
-    names.forEach((n, i) => {
-        document.getElementById(`time-${ids[i]}`).innerText = timings[n];
-    });
-
-    // Hitung mundur & Highlight waktu sholat berikutnya (update setiap detik)
-    setInterval(() => {
-        const now = new Date();
-        const times = names.map(n => {
-            const [h, m] = timings[n].split(':').map(Number);
-            const d = new Date();
-            d.setHours(h, m, 0, 0);
-            return d;
-        });
-
-        let nextIndex = -1;
-        for (let i = 0; i < times.length; i++) {
-            if (now < times[i]) {
-                nextIndex = i;
-                break;
-            }
-        }
-        
-        // Jika waktu sudah lewat Isya, hitung mundur ke Subuh besok
-        if (nextIndex === -1) {
-            const tom = new Date(times[0]);
-            tom.setDate(tom.getDate() + 1);
-            times.push(tom);
-            nextIndex = times.length - 1;
         }
 
-        // Hapus highlight lama, beri highlight ke waktu berikutnya
-        document.querySelectorAll('.sholat-item').forEach(el => el.classList.remove('active'));
-        if (nextIndex < ids.length) {
-            document.getElementById(`sholat-${ids[nextIndex]}`).classList.add('active');
-        }
-
-        // Hitung selisih waktu
-        const diff = times[nextIndex] - now;
-        if (diff > 0) {
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
+        function fetchPrayerTimes(lat, lon) {
+            const d = new Date(); 
+            const url = `https://api.aladhan.com/v1/timings/${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}?latitude=${lat}&longitude=${lon}&method=2`;
             
-            // Tentukan nama sholat berikutnya
-            const nameNext = (nextIndex < names.length) ? names[nextIndex] : names[0];
-            
-            // Update teks countdown
-            document.getElementById('nextSholatInfo').innerText = 
-                `MENUJU ${nameNext.toUpperCase()} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('cityName').innerText = data.data.meta.timezone;
+                    updateSholatUI(data.data.timings);
+                })
+                .catch(() => { document.getElementById('cityName').innerText = "Offline"; });
         }
-    }, 1000);
+
+        function updateSholatUI(timings) {
+            const names = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            const ids = ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'];
+            names.forEach((n, i) => document.getElementById(`time-${ids[i]}`).innerText = timings[n]);
+
+            // Timer update setiap detik
+            setInterval(() => {
+                const now = new Date();
+                const times = names.map(n => {
+                    const [h, m] = timings[n].split(':').map(Number);
+                    const d = new Date(); d.setHours(h, m, 0, 0); return d;
+                });
+
+                let nextIndex = -1;
+                for(let i=0; i<times.length; i++) { if(now < times[i]) { nextIndex = i; break; } }
+                if(nextIndex === -1) { const tom = new Date(times[0]); tom.setDate(tom.getDate() + 1); times.push(tom); nextIndex = times.length - 1; }
+
+                                // Highlight Waktu Sholat
+                document.querySelectorAll('.sholat-item').forEach(el => el.classList.remove('active'));
+                if(nextIndex < ids.length) document.getElementById(`sholat-${ids[nextIndex]}`).classList.add('active');
+
+                // Hitung Mundur
+                const diff = times[nextIndex] - now;
+                if(diff > 0) {
+                    const h = Math.floor(diff / 3600000);
+                    const m = Math.floor((diff % 3600000) / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    
+                    // Tentukan nama sholat berikutnya
+                    const nameNext = names[nextIndex] || names[0];
+                    
+                    // Update teks hitung mundur di header
+                    document.getElementById('nextSholatInfo').innerText = 
+                        `MENUJU ${nameNext.toUpperCase()} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                }
+            }, 1000); // Akhir dari setInterval
         }
+
+        // ===== 3. UNTUK MENGHIDUPKAN MUSIK =====
+        document.addEventListener('click', () => { 
+            document.getElementById('bg-music').play().catch(()=>{}); 
+        });
+    </script>
+</body>
+</html>
