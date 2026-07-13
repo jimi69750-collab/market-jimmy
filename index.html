@@ -1,117 +1,306 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOSHI - JIMMY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MOSHI - by JIMMY</title>
     <style>
-        :root {
-            --bg-color: #0b0f12;
-            --accent-cyan: #00e5ff;
-            --white: #ffffff;
-            --card-bg: #1a2026;
-        }
-        body, html {
-            margin: 0; padding: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--white);
-            height: 100%;
-            overflow-x: hidden;
-        }
-        /* Lockscreen */
-        #lockscreen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; text-align: center;
-        }
-        #main-app { display: none; padding: 20px; }
+        /* --- RESET & BASE STYLE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0b0e14; color: #ffffff; overflow-x: hidden; }
         
-        .clock { font-size: 2rem; font-weight: bold; margin-bottom: 20px; color: var(--accent-cyan); }
-        .btn-enter {
-            background: transparent; border: 2px solid var(--accent-cyan);
-            color: var(--accent-cyan); padding: 15px 40px;
-            font-size: 1.2rem; cursor: pointer; border-radius: 8px;
-            text-transform: uppercase;
+        /* --- VIDEO INTRO --- */
+        #intro-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 9999;
+            background: #000; display: flex; justify-content: center; align-items: center;
         }
+        #intro-video { width: 100%; height: 100%; object-fit: cover; }
+        #skip-btn {
+            position: absolute; top: 40px; right: 20px; z-index: 10000;
+            background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5);
+            padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;
+        }
+
+        /* --- LOCKSCREEN --- */
+        #lock-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 9998;
+            background: #0b0e14; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
+        }
+        #lock-screen .logo-area { margin-bottom: 30px; text-align: center; }
+        #lock-screen .logo-area h1 { font-size: 48px; font-weight: 800; letter-spacing: 2px; color: #00ffff; text-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+        #lock-screen .tagline { color: #888; font-size: 12px; letter-spacing: 4px; margin-top: 5px; }
+        #lock-screen .desc-box {
+            background: #12171f; border: 1px solid #2a3441; border-radius: 20px; padding: 30px;
+            text-align: center; width: 90%; max-width: 350px; margin-bottom: 40px;
+        }
+        #lock-screen .desc-box p { color: #aaa; font-size: 14px; line-height: 1.5; }
+        #lock-screen .desc-box .icon-shield { display: inline-block; margin-bottom: 10px; width: 40px; height: 40px; border: 2px solid #00ffff; border-radius: 12px; line-height: 40px; color: #00ffff; }
         
-        /* Dashboard Layout */
-        .card {
-            background: var(--card-bg); border: 1px solid #333;
-            padding: 20px; border-radius: 15px; margin-bottom: 20px;
+        .btn-cyan {
+            background: transparent; border: 1px solid #00ffff; color: #00ffff; padding: 15px 40px;
+            border-radius: 12px; font-size: 18px; font-weight: bold; letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1); transition: 0.3s; cursor: pointer; text-decoration: none; display: inline-block;
         }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .feature-box {
-            background: var(--card-bg); border: 1px solid var(--accent-cyan);
-            padding: 15px; border-radius: 10px; text-align: center; cursor: pointer;
-        }
-        .header-text { text-align: center; color: var(--accent-cyan); font-size: 2rem; }
+        .btn-cyan:active { background: #00ffff; color: #000; box-shadow: 0 0 25px #00ffff; transform: scale(0.95); }
+
+        /* --- MAIN APP --- */
+        #app-screen { display: none; padding: 20px 15px 100px; max-width: 500px; margin: 0 auto; }
         
-        /* Hidden video/audio elements */
-        #bg-video { position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; z-index: -1; opacity: 0.2; }
+        /* Header */
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .app-header h1 { font-family: 'Brush Script MT', cursive; font-size: 32px; color: white; }
+        .app-header span { color: #888; font-size: 10px; letter-spacing: 2px; }
+        #clock-app { font-size: 14px; color: #00ffff; font-weight: bold; background: #12171f; padding: 5px 12px; border-radius: 20px; }
+
+        /* User Box */
+        .user-box {
+            background: #12171f; border-radius: 20px; padding: 20px; margin-bottom: 15px;
+            display: flex; align-items: center; justify-content: space-between; border: 1px solid #2a3441;
+        }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 50px; height: 50px; background: #00ffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #000; font-weight: bold; font-size: 20px; box-shadow: 0 0 15px rgba(0,255,255,0.3); }
+        .user-text h3 { font-size: 18px; }
+        .user-text p { font-size: 11px; color: #888; }
+        .badge { background: #1e2732; border: 1px solid #3b4a5c; border-radius: 20px; padding: 2px 10px; font-size: 10px; color: #aaa; }
+        .lock-icon { background: #181e28; padding: 10px; border-radius: 12px; color: #00ffff; }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: #12171f; border-radius: 15px; padding: 15px; margin-bottom: 20px;
+            display: flex; justify-content: space-around; border: 1px solid #2a3441;
+        }
+        .stat-item { text-align: center; }
+        .stat-item .icon { font-size: 24px; margin-bottom: 5px; }
+        .stat-item h2 { font-size: 16px; margin: 0; }
+        .stat-item p { font-size: 10px; color: #666; margin: 0; }
+
+        /* --- FEATURES AREA --- */
+        .section-title { color: #00ffff; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        
+        .menu-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;
+        }
+        .menu-card {
+            background: linear-gradient(135deg, #12171f, #1a222c); border: 1px solid #2a3441;
+            border-radius: 15px; padding: 20px 10px; text-align: center; cursor: pointer;
+            transition: all 0.2s ease; min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .menu-card:active { transform: scale(0.95); border-color: #00ffff; background: #1a222c; }
+        .menu-card .icon { font-size: 30px; margin-bottom: 5px; }
+        .menu-card h4 { font-size: 13px; font-weight: bold; margin: 5px 0; }
+        .menu-card p { font-size: 10px; color: #888; }
+
+        /* --- SUB PAGES --- */
+        .sub-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0e14; z-index: 9997; padding: 20px; overflow-y: auto; }
+        .sub-page-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .sub-page-header .back-btn { color: white; font-size: 24px; cursor: pointer; padding: 5px; }
+        .sub-page-header h2 { font-size: 20px; margin: 0; }
+        
+        .sub-menu-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .sub-menu-btn {
+            background: #00ffff; color: #000; padding: 20px; border-radius: 15px; text-align: center;
+            font-weight: bold; font-size: 16px; text-decoration: none; display: block; box-shadow: 0 0 20px rgba(0,255,255,0.2);
+        }
+        .sub-menu-btn:active { transform: scale(0.95); background: #00cccc; }
+
+        .iframe-container { width: 100%; height: 80vh; border-radius: 12px; overflow: hidden; margin-top: 10px; border: 1px solid #2a3441; }
+        iframe { width: 100%; height: 100%; border: none; background: white; }
+
+        /* Utility */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- Background Multimedia -->
-    <video autoplay muted loop id="bg-video">
-        <source src="https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4" type="video/mp4">
-    </video>
-    <audio id="bg-audio" loop>
-        <source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Lockscreen -->
-    <div id="lockscreen">
-        <h1>MOSHI</h1>
-        <div class="clock" id="clock1"></div>
-        <button class="btn-enter" onclick="enterApp()">MASUK</button>
+    <!-- 1. INTRO VIDEO -->
+    <div id="intro-screen">
+        <video id="intro-video" src="https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4" muted autoplay></video>
+        <button id="skip-btn">Skip</button>
     </div>
 
-    <!-- Main App -->
-    <div id="main-app">
-        <h1 class="header-text">JIMMY DASHBOARD</h1>
-        <div class="clock" id="clock2"></div>
-        
-        <div class="grid">
-            <div class="feature-box" onclick="window.open('https://www.slazzer.com', '_blank')">Remove BG</div>
-            <div class="feature-box">TikTok Downloader (MP3/NoBG)</div>
-            <div class="feature-box" onclick="toggleApkMenu()">APK PREMIUM</div>
-            <div class="feature-box" onclick="window.open('https://quran.com', '_blank')">Al-Qur'an Online</div>
+    <!-- 2. LOCK SCREEN -->
+    <div id="lock-screen">
+        <div class="logo-area">
+            <h1>MOSHI</h1>
+            <div class="tagline">by JIMMY • TERUPDATE • STABIL</div>
         </div>
         
-        <div id="apk-menu" style="display:none; margin-top:20px;">
-            <div class="grid">
-                <div class="feature-box" onclick="window.location.href='https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file'">APK MOVIE</div>
-                <div class="feature-box" onclick="window.location.href='https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936'">APK HD FOTO</div>
+        <div class="desc-box">
+            <div class="icon-shield">🛡️</div>
+            <h3 style="margin: 10px 0; color:white;">MOSHI APK</h3>
+            <p>Aplikasi dengan design elegant dan fitur terbaru. Pengembangan langsung oleh JIMMY.</p>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 20px; font-size: 12px; color: #666;">Page awal sebelum masuk</div>
+        
+        <button class="btn-cyan" onclick="enterApp()">🚀 LOGIN TO MOSHI</button>
+        <div style="margin-top: 15px; text-align: center; font-size: 10px; color: #555; display: flex; align-items: center; justify-content: center; gap: 5px;">
+            <span>🕒</span> <span id="lock-clock">00:00:00</span>
+        </div>
+    </div>
+
+    <!-- 3. MAIN APP -->
+    <div id="app-screen">
+        <div class="app-header">
+            <div>
+                <h1>moshi</h1>
+                <span>Design by JIMMY</span>
+            </div>
+            <div id="clock-app">00:00:00</div>
+        </div>
+
+        <!-- User Box -->
+        <div class="user-box">
+            <div class="user-info">
+                <div class="avatar">M</div>
+                <div class="user-text">
+                    <h3>Cylaa (Owner)</h3>
+                    <p>Ahlan Wa Sahlan!!</p>
+                    <div class="badge">OWNER</div>
+                </div>
+            </div>
+            <div class="lock-icon">🔒</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="icon" style="color:#00ff00;">👥</div>
+                <h2>1</h2>
+                <p>Online Users</p>
+            </div>
+            <div class="stat-item">
+                <div class="icon" style="color:#00ffff;">🔗</div>
+                <h2>1</h2>
+                <p>Active Connect</p>
+            </div>
+            <div class="stat-item">
+                <div class="icon" style="color:#ffcc00;">📅</div>
+                <h2 style="font-size: 12px;">Lifetime</h2>
+                <p>Expiration</p>
+            </div>
+        </div>
+
+        <!-- Menu Features -->
+        <div class="section-title">🏠 Beranda & Fitur</div>
+        <div class="menu-grid">
+            <div class="menu-card" onclick="openSubPage('removebg')">
+                <div class="icon">🖼️</div>
+                <h4>Remove BG</h4>
+                <p>web slazzer.com</p>
+            </div>
+            <div class="menu-card" onclick="openSubPage('tiktok')">
+                <div class="icon">🎵</div>
+                <h4>Downloader TT</h4>
+                <p>Hapus Watermark/MP3</p>
+            </div>
+            <div class="menu-card" onclick="openSubPage('apkpremium')">
+                <div class="icon">📦</div>
+                <h4>APK PREMIUM</h4>
+                <p>Movie & HD Foto</p>
+            </div>
+            <div class="menu-card" onclick="openSubPage('quran')">
+                <div class="icon">📖</div>
+                <h4>Al-Qur'an Online</h4>
+                <p>Lengkap + Latin</p>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div style="margin-top: 20px;">
+            <div class="menu-card" style="width: 100%; max-width: none; flex-direction: row; gap: 10px;" onclick="window.location.href='https://wa.me/6287852990112'">
+                <span style="font-size: 20px;">📞</span>
+                <h4 style="margin:0;">HUBUNGI OWNER (UPDATE)</h4>
             </div>
         </div>
         
-        <div class="card" onclick="window.location.href='https://wa.me/6287852990112'">
-            <h3>HUBUNGI OWNER (JIMMY)</h3>
+        <div style="text-align: center; color: #444; font-size: 10px; margin-top: 25px;">
+            APK ini di buat untuk membantu sesama orang.
         </div>
     </div>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString();
-            document.getElementById('clock1').innerText = time;
-            document.getElementById('clock2').innerText = time;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+    <!-- SUB PAGE: Remove BG -->
+    <div id="sub-removebg" class="sub-page">
+        <div class="sub-page-header"><span class="back-btn" onclick="closeSubPage('removebg')">‹</span><h2>Hapus Background</h2></div>
+        <div class="iframe-container"><iframe src="https://www.slazzer.com/upload"></iframe></div>
+    </div>
 
+    <!-- SUB PAGE: TikTok -->
+    <div id="sub-tiktok" class="sub-page">
+        <div class="sub-page-header"><span class="back-btn" onclick="closeSubPage('tiktok')">‹</span><h2>Downloader TikTok</h2></div>
+        <div class="iframe-container"><iframe src="https://ssstik.io/id"></iframe></div>
+    </div>
+
+    <!-- SUB PAGE: APK Premium -->
+    <div id="sub-apkpremium" class="sub-page">
+        <div class="sub-page-header"><span class="back-btn" onclick="closeSubPage('apkpremium')">‹</span><h2>APK PREMIUM</h2></div>
+        <div class="sub-menu-grid">
+            <a href="https://www.mediafire.com/file/5w7lnu12qmaa6g4/Moviebox_2026_mod.apk/file" target="_blank" class="sub-menu-btn">APK MOVIE</a>
+            <a href="https://www.mediafire.com/file/3ruvkktu3syfgam?dkey=l84vb04jhkp&r=1936" target="_blank" class="sub-menu-btn">APK HD FOTO</a>
+        </div>
+    </div>
+
+    <!-- SUB PAGE: Al-Quran -->
+    <div id="sub-quran" class="sub-page">
+        <div class="sub-page-header"><span class="back-btn" onclick="closeSubPage('quran')">‹</span><h2>Qur'an Online</h2></div>
+        <div class="iframe-container"><iframe src="https://quran.com/id"></iframe></div>
+    </div>
+
+
+    <!-- AUDIO LOOP -->
+    <audio id="bg-music" loop>
+        <source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- 1. VIDEO INTRO LOGIC ---
+        const introScreen = document.getElementById('intro-screen');
+        const video = document.getElementById('intro-video');
+        const skipBtn = document.getElementById('skip-btn');
+
+        // Play and Skip
+        function finishIntro() {
+            introScreen.style.display = 'none';
+            document.getElementById('bg-music').play().catch(e => console.log("Autoplay blocked, user must interact first"));
+        }
+
+        video.onended = finishIntro;
+        skipBtn.onclick = finishIntro;
+
+        // --- 2. LOCK & MAIN SCREEN LOGIC ---
         function enterApp() {
-            document.getElementById('lockscreen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            document.getElementById('bg-audio').play();
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('app-screen').style.display = 'block';
+            // Attempt to play music if not playing
+            const audio = document.getElementById('bg-music');
+            if(audio.paused) audio.play().catch(()=>{});
         }
-        
-        function toggleApkMenu() {
-            const menu = document.getElementById('apk-menu');
-            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+
+        // --- 3. SUB PAGE NAVIGATION ---
+        function openSubPage(id) {
+            document.getElementById(`sub-${id}`).style.display = 'block';
         }
+        function closeSubPage(id) {
+            document.getElementById(`sub-${id}`).style.display = 'none';
+        }
+
+        // --- 4. REAL TIME CLOCK ---
+        function updateClocks() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+            
+            document.getElementById('lock-clock').innerText = timeString;
+            document.getElementById('clock-app').innerText = timeString;
+        }
+        setInterval(updateClocks, 1000);
+        updateClocks();
+
+        // --- 5. HANDLE AUTO PLAY POLICY ---
+        // Since browsers block autoplay, clicking anything will trigger music.
+        document.addEventListener('click', function() {
+            const audio = document.getElementById('bg-music');
+            if(audio.paused) audio.play().catch(()=>{});
+        });
     </script>
 </body>
 </html>
