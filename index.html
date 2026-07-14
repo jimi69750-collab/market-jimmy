@@ -78,6 +78,23 @@
         .s-item.active .time { color: #fff; }
         .location { background: rgba(18, 26, 36, 0.8); border-radius: 12px; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; color: #aaa; font-size: 12px; }
 
+        /* --- Video Player Section --- */
+        .video-box { background: rgba(26, 35, 48, 0.5); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(167, 139, 250, 0.2); }
+        .video-wrapper { position: relative; width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 15px; background: #000; }
+        .video-wrapper video { width: 100%; display: block; border-radius: 15px; }
+        .control-group { display: flex; justify-content: center; gap: 25px; margin-top: 5px; }
+        
+        /* Glass Round Buttons */
+        .glass-btn {
+            width: 70px; height: 70px; border-radius: 50%; background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex; justify-content: center; align-items: center; font-size: 32px;
+            color: #fff; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .glass-btn:active { transform: scale(0.92); background: rgba(0, 255, 255, 0.2); }
+        .glass-btn.stop { border-color: rgba(255, 80, 80, 0.4); color: #ff5555; }
+        .glass-btn.stop:active { background: rgba(255, 80, 80, 0.2); }
+
         /* --- Menu Grid --- */
         .section-title { color: #ddd; font-size: 16px; margin: 20px 0 12px 0; letter-spacing: 1px; border-left: 3px solid #00ffff; padding-left: 10px; }
         .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0px; }
@@ -140,6 +157,19 @@
             <div class="location"><span style="color:#00ffff;">📍</span> <span id="cityName">Memuat Lokasi...</span></div>
         </div>
 
+        <!-- Video Player Section -->
+        <div class="video-box anim-enter d3">
+            <div class="video-wrapper">
+                <video id="myVideo" playsinline preload="metadata">
+                    <source src="https://v1.pinimg.com/videos/iht/720p/1c/55/b0/1c55b0875dcb3d9a0ee051c8defa83da.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="control-group">
+                <button class="glass-btn" onclick="playVideo()">▶️</button>
+                <button class="glass-btn stop" onclick="stopVideo()">⏹️</button>
+            </div>
+        </div>
+
         <!-- KATEGORI 1: ISLAMIYAH -->
         <div class="section-title anim-enter d3">☪️ Ibadah & Spiritual</div>
         <div class="grid-menu anim-enter d3">
@@ -168,8 +198,8 @@
         </div>
         
         <div class="footer-msg">"Sebaik-baik manusia adalah yang paling bermanfaat bagi orang lain."</div>
-    </div>
-        <!-- Audio Player Lagu Kemarin -->
+                </div>
+                    <!-- Audio Background Lagu (Loop) -->
     <audio id="bg-music" loop>
         <source src="https://files.catbox.moe/j3mj8v.mp3" type="audio/mpeg">
     </audio>
@@ -234,23 +264,36 @@
             }, 1000);
         }
 
-        // ===== 3. PLAY AUDIO (LAGU KEMARIN) =====
-        const audio = document.getElementById('bg-music');
+        // ===== 3. VIDEO PLAYER LOGIC =====
+        const video = document.getElementById('myVideo');
+        // Suara video tidak terlalu besar (30%)
+        video.volume = 0.3;
 
-        // Fungsi untuk memulai lagu saat klik tombol/enter app
-        function playMusic() {
-            audio.play().catch(e => console.log("Autoplay blocked, but can play on click.", e));
+        function playVideo() {
+            video.play().catch(e => console.log("Gagal play:", e));
         }
 
-        // ===== 4. SPLASH & STARTUP =====
+        function stopVideo() {
+            video.pause();
+            video.currentTime = 0; // Kembali ke awal
+        }
+
+        // ===== 4. AUDIO BACKGROUND LOGIC (LAGU) =====
+        const audio = document.getElementById('bg-music');
+
+        // ===== 5. SPLASH & STARTUP =====
         setTimeout(() => {
             document.getElementById('splash-screen').style.display = 'none';
             document.getElementById('app-screen').style.display = 'block';
             getLocationAndPrayerTimes();
-            playMusic(); // Coba putar otomatis
+            
+            // Mulai lagu otomatis
+            audio.play().catch(() => {
+                console.log("Autoplay lagu diblokir browser, klik layar untuk memulai.");
+            });
         }, 2500); // 2.5 detik
 
-        // ===== 5. FITUR KLIK UNTUK PUTAR LAGU (Jika keblokir autoplay) =====
+        // ===== 6. FITUR KLIK DI MANA SAJA UNTUK MENGHIDUPKAN LAGU =====
         document.addEventListener('click', () => {
             if(audio.paused) {
                 audio.play().catch(()=>{});
